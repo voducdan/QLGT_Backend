@@ -14,5 +14,10 @@
 - 1712197 - Nguyễn Trương Anh Tuấn
 ### Danh sách routes
 - /api/customers : Lấy danh sách tất cả user 
+### Branch
+ Dân: Dan
+ Trí: Tri
+ Bình: Binh
+ Tuấn: Tuan
 
 **Note**: *Tạo tạo user binhbonglo, password binhbonglo*
