@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BT2.Models
+namespace QLGT_API.Models
 {
     public class BangLaiModel
     {
@@ -22,6 +22,6 @@ namespace BT2.Models
         public DateTime NGAY_TAO { get; set; }
         public DateTime NGAY_CAP_NHAT { get; set; }
         [Required]
-        public bool HOAT_DONG { get; set; }
+        public int HOAT_DONG { get; set; }
     }
 }

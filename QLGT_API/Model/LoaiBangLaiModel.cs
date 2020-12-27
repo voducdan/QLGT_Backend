@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BT2.Models
+namespace QLGT_API.Models
 {
     public class LoaiBangLaiModel
     {
