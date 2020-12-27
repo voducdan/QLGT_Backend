@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using QLGT_API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.Extensions.Logging;
 using QLGT_API.Data;
+using System.IO;
+using System.Runtime.InteropServices;
 
 namespace QLGT_API.Controllers
 {
@@ -22,7 +25,7 @@ namespace QLGT_API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
@@ -31,7 +34,120 @@ namespace QLGT_API.Controllers
                     return BadRequest(ModelState);
                 }
                 var khachhang = await this._khachhangData.GetAll();
-                return Ok(khachhang);
+                if (khachhang == null)
+                {
+                    return NotFound();
+                }
+                return Ok(new { 
+                    success = true,
+                    data = khachhang
+                });
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+        
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var khachhang = await this._khachhangData.Get(id);
+                if(khachhang == null)
+                {
+                    return NotFound();
+                }
+                return Ok(new { 
+                    success = true,
+                    data = khachhang
+                });
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody]KhachHangModel khachhang)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var maKhachHang = await _khachhangData.Create(khachhang);
+                if(maKhachHang != "")
+                {
+                    return Ok(new {
+                        success = true,
+                        MA_KHACH_HANG = maKhachHang
+                    });
+                }
+                return NotFound();
+                
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+        
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody]KhachHangModel khachhang)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var result = await _khachhangData.Update(khachhang);
+                if(result == 1)
+                {
+                    return Ok(new { 
+                        success = true,
+                        data = khachhang
+                    });
+                }
+                return NotFound();
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+    
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var khachhang = await _khachhangData.Delete(id);
+                if(khachhang == null)
+                {
+                    return NotFound();
+                }
+                return Ok(new{
+                    success = true,
+                    data = khachhang
+                });
             }
             catch
             {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BT2.Models;
+using QLGT_API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace QLGT_API.Data
