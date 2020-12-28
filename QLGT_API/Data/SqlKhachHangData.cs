@@ -7,6 +7,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using QLGT_API.Utils;
+using System.IO;
 
 namespace QLGT_API.Data
 {
@@ -53,7 +54,10 @@ namespace QLGT_API.Data
         public async Task<string> Create(KhachHangModel khachhang)
         {
             var id = CreateHashString.GetHashString(khachhang.CMND);
-
+            if (Validate.ValidateEmail(khachhang.EMAIL) == 0)
+            {
+                return "EmailErr";
+            }
             khachhang.MA_KHACH_HANG = id;
             khachhang.NGAY_TAO = DateTime.Now;
             khachhang.NGAY_CAP_NHAT = DateTime.Now;
@@ -81,9 +85,13 @@ namespace QLGT_API.Data
         {
             if (_db != null)
             {
+                
+               
                 var khachhang = await Get(id);
                 if (khachhang != null)
                 {
+                    _db.BANG_LAI.RemoveRange(_db.BANG_LAI.Where(bl => bl.MA_KHACH_HANG == id));
+                    await _db.SaveChangesAsync();
                     _db.KHACH_HANG.Remove(khachhang);
                     await _db.SaveChangesAsync();
                     return khachhang;
