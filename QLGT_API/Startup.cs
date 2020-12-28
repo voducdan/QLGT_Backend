@@ -41,6 +41,19 @@ namespace QLGT_API
             });
             services.AddScoped<IKhachHangData, SqlKhachHangData>();
             services.AddScoped<IBangLaiData, SqlBangLaiData>();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("CheckToken", policy =>
+                {
+                    policy.RequireAssertion(httpctx =>
+                    {
+                        if (true)
+                        {
+                            return true;
+                        }
+                    });
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

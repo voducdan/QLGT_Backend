@@ -36,25 +36,35 @@ namespace QLGT_API.Controllers
                 var khachhang = await this._khachhangData.GetAll();
                 if (khachhang == null)
                 {
-                    return NotFound();
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = "Could not find any customer"
+                    });
                 }
-                return Ok(new { 
+                return Ok(new
+                {
                     success = true,
                     data = khachhang
                 });
             }
-            catch
+            catch (IOException e)
             {
+                Console.WriteLine(e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)
         {
             if (id == null)
             {
-                return BadRequest();
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Customer id not found"
+                });
             }
             try
             {
@@ -63,11 +73,16 @@ namespace QLGT_API.Controllers
                     return BadRequest(ModelState);
                 }
                 var khachhang = await this._khachhangData.Get(id);
-                if(khachhang == null)
+                if (khachhang == null)
                 {
-                    return NotFound();
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = "Customer not found"
+                    });
                 }
-                return Ok(new { 
+                return Ok(new
+                {
                     success = true,
                     data = khachhang
                 });
@@ -77,7 +92,7 @@ namespace QLGT_API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]KhachHangModel khachhang)
         {
@@ -88,15 +103,24 @@ namespace QLGT_API.Controllers
                     return BadRequest(ModelState);
                 }
                 var maKhachHang = await _khachhangData.Create(khachhang);
-                if(maKhachHang != "")
+                if (maKhachHang != "")
                 {
-                    return Ok(new {
+                    return Ok(new
+                    {
                         success = true,
                         MA_KHACH_HANG = maKhachHang
                     });
                 }
-                return NotFound();
-                
+                if (maKhachHang == "EmailErr")
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        error = "Email is not valid"
+                    });
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
             }
             catch (IOException e)
             {
@@ -104,7 +128,7 @@ namespace QLGT_API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-        
+
         [HttpPut]
         public async Task<IActionResult> Update([FromBody]KhachHangModel khachhang)
         {
@@ -115,42 +139,57 @@ namespace QLGT_API.Controllers
                     return BadRequest(ModelState);
                 }
                 var result = await _khachhangData.Update(khachhang);
-                if(result == 1)
+                if (result == 1)
                 {
-                    return Ok(new { 
+                    return Ok(new
+                    {
                         success = true,
                         data = khachhang
                     });
                 }
-                return NotFound();
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Customer not found"
+                });
             }
             catch
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-    
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
-                return BadRequest();
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Customer id not found"
+                });
             }
             try
             {
                 var khachhang = await _khachhangData.Delete(id);
-                if(khachhang == null)
+                if (khachhang == null)
                 {
-                    return NotFound();
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = "Customer not found"
+                    });
                 }
-                return Ok(new{
+                return Ok(new
+                {
                     success = true,
                     data = khachhang
                 });
             }
-            catch
+            catch (IOException e)
             {
+                Console.WriteLine(e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
