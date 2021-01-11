@@ -30,5 +30,6 @@ namespace QLGT_API.Models
         public DateTime NGAY_CAP_NHAT { get; set; }
         [Required]
         public int HOAT_DONG { get; set; }
+        
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using QLGT_API.Models;
 using Microsoft.EntityFrameworkCore;
+using QLGT_API.Model;
 
 namespace QLGT_API.Data
 {
@@ -16,5 +17,6 @@ namespace QLGT_API.Data
         public DbSet<BangLaiModel> BANG_LAI { get; set; }
         public DbSet<KhachHangModel> KHACH_HANG { get; set; }
         public DbSet<LoaiBangLaiModel> LOAI_BANG_LAI { get; set; }
+        public DbSet<UserModel> USER { get; set; }
     }
 }
