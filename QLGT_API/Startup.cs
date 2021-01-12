@@ -36,10 +36,10 @@ namespace QLGT_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddCors(c =>
-            {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
-            });
+            //services.AddCors(c =>
+            //{
+            //    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            //});
             services.AddDbContextPool<QLGTDBContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("QLGTDB"));
@@ -48,9 +48,12 @@ namespace QLGT_API
             // Khai báo các service và các Repository đc dùng
             services.AddScoped<UserService, UserService>();
             services.AddScoped<KhachHangService, KhachHangService>();
+            services.AddScoped<BienBangService, BienBangService>();
+            services.AddScoped<UserRepository, UserRepository>();
             services.AddScoped<UserRepository, UserRepository>();
             services.AddScoped<JWTService, JWTService>();
             services.AddScoped<KhachHangRepository, KhachHangRepository>();
+            services.AddScoped<BienBangRepository, BienBangRepository>();
 
             ////configure strongly typed settings object
             var authSettingsSection = Configuration.GetSection("AuthSettings");

@@ -12,6 +12,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using QLGT_API.Repository;
 using QLGT_API.Commands;
+using QLGT_API.Model;
 
 namespace QLGT_API.Controllers
 {
@@ -159,7 +160,10 @@ namespace QLGT_API.Controllers
                 }
 
                 var KhachHang = this.khachHangService.GetKhachHang(khachhang.CMND);
-                khachHangRepository.Update(KhachHang);
+                if(KhachHang != null)
+                {
+                    khachHangRepository.Update(khachhang);
+                }
                 return Ok(new
                 {
                     success = true
