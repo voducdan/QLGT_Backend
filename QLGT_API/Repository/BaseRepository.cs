@@ -1,5 +1,7 @@
 ﻿using QLGT_API.Data;
+using QLGT_API.Models;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -36,7 +38,7 @@ namespace QLGT_API.Repository
             return  Data;
         }
 
-        public void Creat(T entity)
+        public void Create(T entity)
         {
             context.Set<T>().Add(entity);
             context.SaveChanges();

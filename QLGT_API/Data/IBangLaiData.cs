@@ -9,8 +9,10 @@ namespace QLGT_API.Data
 {
     public interface IBangLaiData
     {
-        Task<IEnumerable<KhachHang_BangLaiModel>> GetAll();
-        Task<KhachHang_BangLaiModel> Get(string id);
-        //Task<KhachHang_BangLaiModel> Delete(string id);
+        Task<IEnumerable<KhachHang_BangLaiModel>> GetAll(int? pageSize, int? pageIndex);
+        Task<KhachHang_BangLaiModel> Get(int id);
+        Task<int> Update(BangLaiModel kh_bl);
+        Task<int> Delete(int id);
+        Task<int> Create(BangLaiModel bl);
     }
 }

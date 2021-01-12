@@ -50,6 +50,8 @@ namespace QLGT_API
             services.AddScoped<UserRepository, UserRepository>();
             services.AddScoped<JWTService, JWTService>();
             services.AddScoped<KhachHangRepository, KhachHangRepository>();
+            services.AddScoped<BangLaiService, BangLaiService>();
+            services.AddScoped<BangLaiRepository, BangLaiRepository>();
 
             ////configure strongly typed settings object
             var authSettingsSection = Configuration.GetSection("AuthSettings");
@@ -68,8 +70,8 @@ namespace QLGT_API
                 });
             });
 
-            //services.AddScoped<IKhachHangData, SqlKhachHangData>();
-            //services.AddScoped<IBangLaiData, SqlBangLaiData>();
+            services.AddScoped<IKhachHangData, SqlKhachHangData>();
+            services.AddScoped<IBangLaiData, SqlBangLaiData>();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("CheckToken", policy =>

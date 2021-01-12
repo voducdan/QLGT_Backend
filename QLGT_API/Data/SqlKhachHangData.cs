@@ -53,7 +53,6 @@ namespace QLGT_API.Data
         }
         public async Task<int> Create(KhachHangModel khachhang)
         {
-            //var id = CreateHashString.GetHashString(khachhang.CMND);
             if (Validate.ValidateEmail(khachhang.EMAIL) == 0)
             {
                 return 10;

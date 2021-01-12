@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace QLGT_API.Models
         [Required]
         public int MA_LOAI_BANG_LAI { get; set; }
         [Required]
-        public int TEN_LOAI_BANG_LAI { get; set; }
+        public string TEN_LOAI_BANG_LAI { get; set; }
         [Required]
         public int MA_KHACH_HANG { get; set; }
         [Required]

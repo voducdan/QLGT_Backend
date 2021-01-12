@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,8 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using QLGT_API.Commands;
 using QLGT_API.Data;
 using QLGT_API.Models;
+using QLGT_API.Repository;
 
 namespace QLGT_API.Controllers
 {
@@ -16,15 +19,14 @@ namespace QLGT_API.Controllers
     public class BangLaiController : ControllerBase
     {
         private readonly IBangLaiData _banglaiData;
-
         public BangLaiController(IBangLaiData bangLaiData)
         {
             this._banglaiData = bangLaiData;
         }
 
-        // GET: api/BangLai
+        // GET: api/lisence
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<KhachHang_BangLaiModel>>> GetAll()
+        public async Task<IActionResult> GetAll([FromBody] PageCommand pageCommand)
         {
             try
             {
@@ -32,7 +34,7 @@ namespace QLGT_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var banglai = await this._banglaiData.GetAll();
+                var banglai = await _banglaiData.GetAll(pageCommand.PageSize, pageCommand.PageIndex);
                 if (banglai == null)
                 {
                     return NotFound(new
@@ -55,11 +57,11 @@ namespace QLGT_API.Controllers
         }
 
 
-        // GET: api/BangLai/5
+        //GET: api/lisence/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<KhachHang_BangLaiModel>> Get(string id)
+        public async Task<IActionResult> Get(int id)
         {
-            if (id == null)
+            if (id.ToString() == null)
             {
                 return BadRequest(new
                 {
@@ -73,7 +75,7 @@ namespace QLGT_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var banglai = await this._banglaiData.Get(id);
+                var banglai = await _banglaiData.Get(id);
                 if (banglai == null)
                 {
                     return NotFound(new
@@ -88,104 +90,111 @@ namespace QLGT_API.Controllers
                     data = banglai
                 });
             }
-            catch( IOException e)
+            catch (IOException e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-        //// PUT: api/BangLai/5
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutBangLaiModel(string id, BangLaiModel bangLaiModel)
-        //{
-        //    if (id != bangLaiModel.MA_BANG_LAI)
-        //    {
-        //        return BadRequest();
-        //    }
 
-        //    _context.Entry(bangLaiModel).State = EntityState.Modified;
+        // PUT: api/lisence
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] BangLaiModel bl)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var result = await _banglaiData.Update(bl);
+                if (result == 1)
+                {
+                    return Ok(new
+                    {
+                        success = true,
+                        data = bl
+                    });
+                }
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Lisence not found"
+                });
+            }
+            catch (IOException e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!BangLaiModelExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+        // POST: api/BangLai
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] BangLaiModel bl)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var maKhachHang = await _banglaiData.Create(bl);
+                if (bl.MA_BANG_LAI.ToString() != null)
+                {
+                    return Ok(new
+                    {
+                        success = true,
+                        data = bl
+                    });
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError);
 
-        //    return NoContent();
-        //}
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
 
-        //// POST: api/BangLai
-        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
-        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        //[HttpPost]
-        //public async Task<ActionResult<BangLaiModel>> PostBangLaiModel(BangLaiModel bangLaiModel)
-        //{
-        //    _context.BANG_LAI.Add(bangLaiModel);
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateException)
-        //    {
-        //        if (BangLaiModelExists(bangLaiModel.MA_BANG_LAI))
-        //        {
-        //            return Conflict();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return CreatedAtAction("GetBangLaiModel", new { id = bangLaiModel.MA_BANG_LAI }, bangLaiModel);
-        //}
-
-        // DELETE: api/lisence/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<KhachHang_BangLaiModel>> Delete(string id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return BadRequest(new
-        //        {
-        //            success = false,
-        //            error = "Lesence id not found"
-        //        });
-        //    }
-        //    try
-        //    {
-        //        var banglai = await _banglaiData.Delete(id);
-        //        if (banglai == null)
-        //        {
-        //            return NotFound(new
-        //            {
-        //                success = false,
-        //                error = "Lisence not found"
-        //            });
-        //        }
-        //        return Ok(new
-        //        {
-        //            success = true,
-        //            data = banglai
-        //        });
-        //    }
-        //    catch (IOException e)
-        //    {
-        //        Console.WriteLine(e.Message);
-        //        return StatusCode(StatusCodes.Status500InternalServerError);
-        //    }
-        //}
+        //DELETE: api/lisence/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<BangLaiModel>> Delete(int id)
+        {
+            if (id.ToString() == null)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Lesence id not found"
+                });
+            }
+            try
+            {
+                var banglai = await _banglaiData.Delete(id);
+                if (banglai == null)
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = "Lisence not found"
+                    });
+                }
+                return Ok(new
+                {
+                    success = true,
+                    data = banglai
+                });
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
 
         //private bool BangLaiModelExists(string id)
         //{

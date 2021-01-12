@@ -36,7 +36,7 @@ namespace QLGT_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var khachhang = this.khachHangRepository.GetList(pageCommand.PageIndex, pageCommand.PageSize, m => m.HOAT_DONG == 0);
+                var khachhang = this.khachHangRepository.GetList(pageCommand.PageIndex, pageCommand.PageSize, m => m.HOAT_DONG == 1);
                 if (khachhang == null)
                 {
                     return NotFound(new
