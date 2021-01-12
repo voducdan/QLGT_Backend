@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 using QLGT_API.Repository;
 using QLGT_API.Commands;
 
+
 namespace QLGT_API.Controllers
 {
     [ApiController]
@@ -58,7 +59,7 @@ namespace QLGT_API.Controllers
             }
         }
         [HttpGet("{id}")]
-        IActionResult Get(int id)
+        public IActionResult Get(int id)
         {
             if (id.ToString() == null)
             {
@@ -95,7 +96,7 @@ namespace QLGT_API.Controllers
             }
         }
         //[HttpPut]
-        //public async Task<IActionResult> Update([FromBody] PhuongTienModel phuongtien)
+        //public IActionResult Update([FromBody] UpdatePhuongTienCommand updatePhuongTienCommand)
         //{
         //    try
         //    {
@@ -103,7 +104,7 @@ namespace QLGT_API.Controllers
         //        {
         //            return BadRequest(ModelState);
         //        }
-        //        var result =  phuongTienRepository.Update(phuongtien);
+        //        var result = this.phuongTienRepository.Update(updatePhuongTienCommand.MAU_SON,);
         //        if (result == 1)
         //        {
         //            return Ok(new

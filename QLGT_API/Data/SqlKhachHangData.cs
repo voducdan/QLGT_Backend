@@ -28,7 +28,7 @@ namespace QLGT_API.Data
             }
             return null;
         }
-        public async Task<KhachHangModel> Get(string id)
+        public async Task<KhachHangModel> Get(int id)
         {
             if (_db != null)
             {
@@ -51,14 +51,14 @@ namespace QLGT_API.Data
             }
             return null;
         }
-        public async Task<string> Create(KhachHangModel khachhang)
+        public async Task<int> Create(KhachHangModel khachhang)
         {
-            var id = CreateHashString.GetHashString(khachhang.CMND);
+            //var id = CreateHashString.GetHashString(khachhang.CMND);
             if (Validate.ValidateEmail(khachhang.EMAIL) == 0)
             {
-                return "EmailErr";
+                return 10;
             }
-            khachhang.MA_KHACH_HANG = id;
+            khachhang.MA_KHACH_HANG = 1;
             khachhang.NGAY_TAO = DateTime.Now;
             khachhang.NGAY_CAP_NHAT = DateTime.Now;
             if (_db != null)
@@ -67,7 +67,7 @@ namespace QLGT_API.Data
                 await _db.SaveChangesAsync();
                 return khachhang.MA_KHACH_HANG;
             }
-            return "";
+            return 1;
         }
         public async Task<int> Update(KhachHangModel khachhang)
         {
@@ -81,7 +81,7 @@ namespace QLGT_API.Data
             }
             return 0;
         }
-        public async Task<KhachHangModel> Delete(string id)
+        public async Task<KhachHangModel> Delete(int id)
         {
             if (_db != null)
             {
