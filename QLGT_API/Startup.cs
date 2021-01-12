@@ -68,8 +68,8 @@ namespace QLGT_API
                 });
             });
 
-            services.AddScoped<IKhachHangData, SqlKhachHangData>();
-            services.AddScoped<IBangLaiData, SqlBangLaiData>();
+            //services.AddScoped<IKhachHangData, SqlKhachHangData>();
+            //services.AddScoped<IBangLaiData, SqlBangLaiData>();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("CheckToken", policy =>
