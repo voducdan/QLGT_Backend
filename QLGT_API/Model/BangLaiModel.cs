@@ -11,7 +11,7 @@ namespace QLGT_API.Models
         [Key]
         public int MA_BANG_LAI { get; set; }
         [Required]
-        public string MA_LOAI_BANG_LAI { get; set; }
+        public int MA_LOAI_BANG_LAI { get; set; }
         [Required]
         public int MA_KHACH_HANG { get; set; }
         [Required]

@@ -7,8 +7,8 @@ namespace QLGT_API.Model
 {
     public class LoiViPhamModel
     {
-        public string MA_LOI_VI_PHAM { get; set; }
-        public string MA_NHOM_VI_PHAM { get; set; }
+        public int MA_LOI_VI_PHAM { get; set; }
+        public int MA_NHOM_VI_PHAM { get; set; }
         public int MA_LOAI_PHUONG_TIEN { get; set; }
         public string TEN_LOI_VI_PHAM { get; set; }
         public string NOI_DUNG { get; set; }
