@@ -37,7 +37,7 @@ namespace QLGT_API.Repository
             {
                 Data = context.Set<T>().Where(expression).ToList();
             }
-            if (pageIndex > 1 && pageIndex <= maxPageIndex)
+            if (pageIndex >= 1 && pageIndex <= maxPageIndex)
             {
                 Next = pageIndex + 1;
                 Pre = pageIndex - 1;
