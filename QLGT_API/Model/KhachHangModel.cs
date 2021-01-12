@@ -10,7 +10,7 @@ namespace QLGT_API.Models
     public class KhachHangModel
     {
         [Key]
-        public string MA_KHACH_HANG { get; set; }
+        public int MA_KHACH_HANG { get; set; }
         [Required]
         public string TEN_KHACH_HANG { get; set; }
         public string EMAIL { get; set; }
@@ -30,5 +30,6 @@ namespace QLGT_API.Models
         public DateTime NGAY_CAP_NHAT { get; set; }
         [Required]
         public int HOAT_DONG { get; set; }
+        
     }
 }
