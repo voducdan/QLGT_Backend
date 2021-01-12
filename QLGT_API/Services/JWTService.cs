@@ -18,7 +18,7 @@ namespace QLGT_API.Services
         {
 
             var claims = new[] {
-                new Claim(Key.JWTUserIdKey, userModel.ToString()),
+                new Claim(Key.JWTUserIdKey, userModel.ID_ACCOUNT.ToString()),
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSecret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

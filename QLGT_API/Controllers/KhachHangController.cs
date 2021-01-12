@@ -159,7 +159,11 @@ namespace QLGT_API.Controllers
                 }
 
                 var KhachHang = this.khachHangService.GetKhachHang(khachhang.CMND);
-                khachHangRepository.Update(KhachHang);
+                if(KhachHang!= null)
+                {
+                    khachHangRepository.Update(khachhang);
+                }
+                
                 return Ok(new
                 {
                     success = true
