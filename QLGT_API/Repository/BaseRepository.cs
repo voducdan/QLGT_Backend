@@ -17,7 +17,7 @@ namespace QLGT_API.Repository
             this.context = context;
         }
 
-        public T Get(Expression<Func<T, bool>> expression)
+        public T? Get(Expression<Func<T, bool>> expression)
         {
             return context.Set<T>().FirstOrDefault(expression);
         }
@@ -31,16 +31,13 @@ namespace QLGT_API.Repository
             List<T> Data;
             if (pageIndex.HasValue && pageSize.HasValue)
             {
-                Data = context.Set<T>().Where(expression).Skip((pageIndex.Value * pageSize.Value)-pageSize.Value).Take(pageSize.Value).ToList();
+                Data = context.Set<T>().Where(expression).Skip((pageIndex.Value * pageSize.Value) - pageSize.Value).Take(pageSize.Value).ToList();
             }
             else
             {
                 Data = context.Set<T>().Where(expression).ToList();
             }
-<<<<<<< HEAD
-=======
             
->>>>>>> 7c111e97c557f16b519bc4219c82428f9fc29c8b
             if (pageIndex >= 1 && pageIndex <= maxPageIndex)
             {
                 Next = pageIndex + 1;
