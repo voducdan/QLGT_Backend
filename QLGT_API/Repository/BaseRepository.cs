@@ -27,7 +27,7 @@ namespace QLGT_API.Repository
             List<T> Data;
             if (pageIndex.HasValue && pageSize.HasValue)
             {
-                Data = context.Set<T>().Where(expression).Skip(pageIndex.Value * pageSize.Value).Take(pageSize.Value).ToList();
+                Data = context.Set<T>().Where(expression).Skip((pageIndex.Value * pageSize.Value)-pageSize.Value).Take(pageSize.Value).ToList();
             }
             else
             {
