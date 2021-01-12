@@ -45,7 +45,7 @@ namespace QLGT_API.Repository
             }
              
 
-            return  new ListView<T> { Data= Data, PrePage= Pre, NextPage= Next };
+            return  new ListView<T> { Data= Data, CurrPage= pageIndex, PrePage= Pre, NextPage= Next };
         }
 
         public void Create(T entity)
