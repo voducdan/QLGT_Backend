@@ -13,6 +13,9 @@ namespace QLGT_API.Views
         public int? CurrPage { get; set; }
 
         public int? NextPage { get; set; }
-        
+        public int? LastPage { get; set; }
+
+
+
     }
 }

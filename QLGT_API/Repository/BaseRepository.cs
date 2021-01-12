@@ -37,15 +37,18 @@ namespace QLGT_API.Repository
             {
                 Data = context.Set<T>().Where(expression).ToList();
             }
-
-            if (pageIndex >= 1 && pageIndex <= maxPageIndex)
+            if (pageIndex <= maxPageIndex)
             {
-                Next = pageIndex + 1;
                 Pre = pageIndex - 1;
             }
+            if (pageIndex >= 1 && pageIndex < maxPageIndex)
+            {
+                Next = pageIndex + 1;                
+            }
+            
              
 
-            return  new ListView<T> { Data= Data, CurrPage= pageIndex, PrePage= Pre, NextPage= Next };
+            return  new ListView<T> { Data= Data, CurrPage= pageIndex, PrePage= Pre, NextPage= Next, LastPage= maxPageIndex };
         }
 
         public void Create(T entity)
