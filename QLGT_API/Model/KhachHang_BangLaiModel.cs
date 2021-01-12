@@ -9,13 +9,13 @@ namespace QLGT_API.Models
     public class KhachHang_BangLaiModel
     {
         [Key]
-        public string MA_BANG_LAI { get; set; }
+        public int MA_BANG_LAI { get; set; }
         [Required]
-        public string MA_LOAI_BANG_LAI { get; set; }
+        public int MA_LOAI_BANG_LAI { get; set; }
         [Required]
-        public string TEN_LOAI_BANG_LAI { get; set; }
+        public int TEN_LOAI_BANG_LAI { get; set; }
         [Required]
-        public string MA_KHACH_HANG { get; set; }
+        public int MA_KHACH_HANG { get; set; }
         [Required]
         public string TEN_KHACH_HANG { get; set; }
         [Required]

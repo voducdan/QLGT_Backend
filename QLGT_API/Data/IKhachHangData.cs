@@ -10,9 +10,9 @@ namespace QLGT_API.Data
     public interface IKhachHangData
     {
         Task<IEnumerable<KhachHangModel>> GetAll();
-        Task<string> Create(KhachHangModel khachhang);
-        Task<KhachHangModel> Get(string id);
+        Task<int> Create(KhachHangModel khachhang);
+        Task<KhachHangModel> Get(int id);
         Task<int> Update(KhachHangModel khachhang);
-        Task<KhachHangModel> Delete(string id);
+        Task<KhachHangModel> Delete(int id);
     }
 }
