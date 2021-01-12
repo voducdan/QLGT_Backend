@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using QLGT_API.Data;
 using System.IO;
 using System.Runtime.InteropServices;
+using QLGT_API.Repository;
+using QLGT_API.Commands;
 
 namespace QLGT_API.Controllers
 {
@@ -17,15 +19,15 @@ namespace QLGT_API.Controllers
     [Route("api/vehicles")]
     public class PhuongTienController : ControllerBase
     {
-        private readonly IPhuongTienData _phuongTienData;
-
-        public PhuongTienController(IPhuongTienData phuongTienData)
+        private PhuongTienRepository phuongTienRepository;
+      
+        public PhuongTienController(PhuongTienRepository phuongTienRepository)
         {
-            this._phuongTienData = phuongTienData;
+            this.phuongTienRepository = phuongTienRepository;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetListPhuongTien([FromBody] PageCommand pageCommand)
         {
             try
             {
@@ -33,7 +35,8 @@ namespace QLGT_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var phuongtien = await this._phuongTienData.GetAll();
+                var phuongtien = this.phuongTienRepository.GetList(pageCommand.PageIndex, pageCommand.PageSize, ww => ww.HOAT_DONG == 0);
+               
                 if (phuongtien == null)
                 {
                     return NotFound(new
@@ -55,9 +58,9 @@ namespace QLGT_API.Controllers
             }
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        IActionResult Get(int id)
         {
-            if (id == null)
+            if (id.ToString() == null)
             {
                 return BadRequest(new
                 {
@@ -71,7 +74,7 @@ namespace QLGT_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var phuongTien = await this._phuongTienData.Get(id);
+                var phuongTien = this.phuongTienRepository.Get(w => w.MA_PHUONG_TIEN == id);
                 if (phuongTien == null)
                 {
                     return NotFound(new
@@ -91,35 +94,36 @@ namespace QLGT_API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] PhuongTienModel phuongtien)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-                var result = await _phuongTienData.Update(phuongtien);
-                if (result == 1)
-                {
-                    return Ok(new
-                    {
-                        success = true,
-                        data = phuongtien
-                    });
-                }
-                return NotFound(new
-                {
-                    success = false,
-                    error = "Vehicle not found"
-                });
-            }
-            catch
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-        }
+        //[HttpPut]
+        //public async Task<IActionResult> Update([FromBody] PhuongTienModel phuongtien)
+        //{
+        //    try
+        //    {
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return BadRequest(ModelState);
+        //        }
+        //        var result =  phuongTienRepository.Update(phuongtien);
+        //        if (result == 1)
+        //        {
+        //            return Ok(new
+        //            {
+        //                success = true,
+        //                data = phuongtien
+        //            });
+        //        }
+        //        return NotFound(new
+        //        {
+        //            success = false,
+        //            error = "Vehicle not found"
+        //        });
+        //    }
+        //    catch
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError);
+        //    }
+        //}
 
-    }
+    } 
+
 }

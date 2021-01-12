@@ -9,11 +9,13 @@ namespace QLGT_API.Models
     {
 
         [Key]
-        public string MA_PHUONG_TIEN { get; set; }
+
+        public int MA_PHUONG_TIEN { get; set; }
         [Required]
-        public string MA_KHACH_HANG { get; set; }
+        public int MA_KHACH_HANG { get; set; }
         [Required]
-        public string MA_LOAI_PHUONG_TIEN { get; set; }
+
+        public int MA_LOAI_PHUONG_TIEN { get; set; }
         [Required]
         public string SO_PHUONG_TIEN { get; set; }
         [Required]
@@ -30,13 +32,14 @@ namespace QLGT_API.Models
         public string BIEN_SO_XE { get; set; }
         [Required]
         public DateTime NGAY_DAU_DANG_KY { get; set; }
-  
+
         public string GHI_CHU { get; set; }
         [Required]
         public DateTime NGAY_TAO { get; set; }
         [Required]
         public DateTime NGAY_CAP_NHAT { get; set; }
         [Required]
-        public bool HOAT_DONG { get; set; }
+        public int HOAT_DONG { get; set; }
+
     }
 }

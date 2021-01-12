@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,11 +15,16 @@ using Microsoft.EntityFrameworkCore;
 using QLGT_API.Data;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using QLGT_API.Repository;
+using QLGT_API.Services;
+using QLGT_API.Constants;
+using System.Text;
 
 namespace QLGT_API
 {
     public class Startup
     {
+        private const string AllowAllOriginsPolicy = "AllowAllOriginsPolicy";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -39,6 +44,32 @@ namespace QLGT_API
             {
                 options.UseSqlServer(Configuration.GetConnectionString("QLGTDB"));
             });
+
+            // Khai báo các service và các Repository đc dùng
+            services.AddScoped<UserService, UserService>();
+            services.AddScoped<UserRepository, UserRepository>();
+            services.AddScoped<JWTService, JWTService>();
+            services.AddScoped<KhachHangRepository, KhachHangRepository>();
+            services.AddScoped<PhuongTienRepository, PhuongTienRepository>();
+            services.AddScoped<PhuongTienService, PhuongTienService>();
+
+            ////configure strongly typed settings object
+            var authSettingsSection = Configuration.GetSection("AuthSettings");
+            services.Configure<AuthSettings>(authSettingsSection);
+
+            var appSettings = authSettingsSection.Get<AuthSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.AuthSecret);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowAllOriginsPolicy,
+                builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+
+                });
+            });
+
             services.AddScoped<IKhachHangData, SqlKhachHangData>();
             services.AddScoped<IBangLaiData, SqlBangLaiData>();
             services.AddScoped<IPhuongTienData, SqlPhuongTienData>();

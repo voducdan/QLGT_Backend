@@ -28,7 +28,7 @@ namespace QLGT_API.Data
             }
             return null;
         }
-        public async Task<PhuongTienModel> Get(string id)
+        public async Task<PhuongTienModel> Get(int id)
         {
         if (_db != null)
         {
@@ -66,5 +66,9 @@ namespace QLGT_API.Data
             return 0;
         }
 
+        public Task<PhuongTienModel> Get(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
