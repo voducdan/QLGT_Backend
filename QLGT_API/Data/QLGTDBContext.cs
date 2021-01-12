@@ -17,6 +17,6 @@ namespace QLGT_API.Data
         public DbSet<BangLaiModel> BANG_LAI { get; set; }
         public DbSet<KhachHangModel> KHACH_HANG { get; set; }
         public DbSet<LoaiBangLaiModel> LOAI_BANG_LAI { get; set; }
-        public DbSet<UserModel> USER { get; set; }
+        public DbSet<UserModel> ACCOUNT { get; set; }
     }
 }

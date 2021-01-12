@@ -21,51 +21,55 @@ namespace QLGT_API.Controllers
         // Khai bao cac service va repository su dung 
         private UserService userService;
         private UserRepository userRepository;
+        private KhachHangRepository khachHangRepository;
+        private KhachHangService khachHangService;
         private JWTService jWTService;
         private AuthSettings authSettings;
 
-        public AuthController(UserService userService, UserRepository userRepository, JWTService jWTService, IOptions<AuthSettings> authSettings) : base()
+        public AuthController(UserService userService, UserRepository userRepository, KhachHangRepository khachHangRepository, KhachHangService khachHangService, JWTService jWTService, IOptions<AuthSettings> authSettings)
         {
             this.userService = userService;
             this.userRepository = userRepository;
+            this.khachHangRepository = khachHangRepository;
+            this.khachHangService = khachHangService;
             this.jWTService = jWTService;
             this.authSettings = authSettings.Value;
         }
 
-        private string ProcessLogin(UserModel user)
-        {
-            // Time died
-            var accessTokenExpiration = DateTime.Now.AddMinutes(ExpiredTime.AccessTokenExpirationTime);
-            // ceate accessToken
-            var accessToken = jWTService.GenerateAccessToken(authSettings.AuthSecret, user, accessTokenExpiration);
+        //private string ProcessLogin(UserModel user)
+        //{
+        //    // Time died
+        //    var accessTokenExpiration = DateTime.Now.AddMinutes(ExpiredTime.AccessTokenExpirationTime);
+        //    // ceate accessToken
+        //    var accessToken = jWTService.GenerateAccessToken(authSettings.AuthSecret, user, accessTokenExpiration);
 
-            return accessToken;
-        }
-
-
-        [Route("login")]
-        [HttpPost]
-        public LoginView Login([FromBody] LoginCommand command)
-        {
-            LoginView loginView = new LoginView();
-            var user = userService.GetUser(command.Username);
-            if (HashHelper.Verify(command.Password, user.Password))
-            {
-                loginView.code = 200;
-                loginView.AccessToken = ProcessLogin(user);
-                loginView.message = "Login Sucessful";
+        //    return accessToken;
+        //}
 
 
-            }
-            else
-            {
-                loginView.code = 400;
-                loginView.AccessToken = null;
-                loginView.message = "Login Fail";
+        //[Route("login")]
+        //[HttpPost]
+        //public LoginView Login([FromBody] LoginCommand command)
+        //{
+        //    LoginView loginView = new LoginView();
+        //    var user = userService.GetUser(command.Username);
+        //    if (HashHelper.Verify(command.Password, user.Password))
+        //    {
+        //        loginView.code = 200;
+        //        loginView.AccessToken = ProcessLogin(user);
+        //        loginView.message = "Login Sucessful";
 
-            }
-            return loginView;
-        }
+
+        //    }
+        //    else
+        //    {
+        //        loginView.code = 400;
+        //        loginView.AccessToken = null;
+        //        loginView.message = "Login Fail";
+
+        //    }
+        //    return loginView;
+        //}
 
 
         // create new user
@@ -74,25 +78,27 @@ namespace QLGT_API.Controllers
         public RegisterView register([FromBody] CreateUserCommand command)
         {
             RegisterView registerView = new RegisterView();
-            UserModel userModel = new UserModel();
-            //user.id = command.id;
-            userModel.Username = command.Username;
-            userModel.Email = command.Email;
-            userModel.Password = HashHelper.Hash(command.Password);
-            //user.isadmin = false;
-            //user.isadmin = command.isadmin;
-            try
+            var user = khachHangService.GetKhachHang(command.Username);
+            if (user != null)
             {
-                userRepository.Create(userModel);
-                registerView.code = 200;
-                registerView.message = "create user successfully";
-            }
-            catch (System.Exception)
-            {
+                UserModel userModel = new UserModel();
+                userModel.Cmnd = command.Username;
+                userModel.Password = HashHelper.Hash(command.Password);
+                userModel.MA_KHACH_HANG = user.MA_KHACH_HANG;
 
-                registerView.code = 400;
-                registerView.message = "create user Failed";
-            }
+                try
+                {
+
+                    userRepository.Create(userModel);
+                    registerView.code = 200;
+                    registerView.message = "create user successfully";
+                }
+                catch
+                {
+                    registerView.code = 400;
+                    registerView.message = "create user Failed";
+                }
+            }            
             return registerView;
         }
     }
