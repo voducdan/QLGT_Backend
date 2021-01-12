@@ -90,7 +90,7 @@ namespace QLGT_API.Controllers
                 return Ok(new
                 {
                     success = true,
-                    data = khachhang
+                    khachhang
                 });
             }
             catch
