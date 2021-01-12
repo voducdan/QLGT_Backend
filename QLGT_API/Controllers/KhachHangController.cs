@@ -12,6 +12,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using QLGT_API.Repository;
 using QLGT_API.Commands;
+using QLGT_API.Model;
+using QLGT_API.Views;
 
 namespace QLGT_API.Controllers
 {
@@ -19,24 +21,26 @@ namespace QLGT_API.Controllers
     [Route("api/customers")]
     public class KhachHangController : ControllerBase
     {
-        private readonly KhachHangRepository khachHangRepository;
+        private KhachHangRepository khachHangRepository;
+        private KhachHangService khachHangService;
 
-        public KhachHangController(KhachHangRepository khachHangRepository)
+        public KhachHangController(KhachHangRepository khachHangRepository, KhachHangService khachHangService)
         {
             this.khachHangRepository = khachHangRepository;
+            this.khachHangService = khachHangService;
         }
 
         [HttpGet]
 
-        public IActionResult GetAll([FromBody] PageCommand pageCommand)
+        public IActionResult GetAll([FromQuery] PageCommand pageCommand)
         {
             try
-            {
+            {             
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
-                var khachhang = this.khachHangRepository.GetList(pageCommand.PageIndex, pageCommand.PageSize, m => m.HOAT_DONG == 1);
+                ListView<KhachHangModel> khachhang = this.khachHangRepository.GetList(pageCommand.PageIndex, pageCommand.PageSize, m => m.HOAT_DONG == 1);
                 if (khachhang == null)
                 {
                     return NotFound(new
@@ -48,7 +52,7 @@ namespace QLGT_API.Controllers
                 return Ok(new
                 {
                     success = true,
-                    data = khachhang
+                    khachhang
                 });
             }
             catch (IOException e)
@@ -96,105 +100,81 @@ namespace QLGT_API.Controllers
             }
         }
 
-        //    [HttpPost]
-        //    public async Task<IActionResult> Create([FromBody] KhachHangModel khachhang)
-        //    {
-        //        try
-        //        {
-        //            if (!ModelState.IsValid)
-        //            {
-        //                return BadRequest(ModelState);
-        //            }
-        //            var maKhachHang = await _khachhangData.Create(khachhang);
-        //            if (maKhachHang != "")
-        //            {
-        //                return Ok(new
-        //                {
-        //                    success = true,
-        //                    MA_KHACH_HANG = maKhachHang
-        //                });
-        //            }
-        //            if (maKhachHang == "EmailErr")
-        //            {
-        //                return BadRequest(new
-        //                {
-        //                    success = false,
-        //                    error = "Email is not valid"
-        //                });
-        //            }
-        //            return StatusCode(StatusCodes.Status500InternalServerError);
+        [HttpPost]
+        public IActionResult Create([FromBody] CreateKhachHangCommand command)
+        {
+            KhachHangModel kh = new KhachHangModel();
+            kh.TEN_KHACH_HANG = command.TEN_KHACH_HANG;
+            kh.EMAIL = command.EMAIL;
+            kh.DIA_CHI = command.DIA_CHI;
+            kh.SDT = command.SDT;
+            kh.TUOI = command.TUOI;
+            kh.GIOI_TINH = command.GIOI_TINH;
+            kh.CMND = command.CMND;
+            kh.NGAY_TAO = command.NGAY_TAO;
+            kh.QUOC_TICH = command.QUOC_TICH;
+            kh.NGAY_CAP_NHAT = command.NGAY_CAP_NHAT;
+            kh.HOAT_DONG = command.HOAT_DONG;
+                       
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var KhachHang = this.khachHangService.GetKhachHang(command.CMND);
+                if (KhachHang == null)
+                {
+                    this.khachHangRepository.Create(kh);
+                    return Ok(new
+                    {
+                        success = true
+                        
+                    }) ; 
+                }
+                if (KhachHang != null)
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        error = "CMND is exist"
+                    });
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError);
 
-        //        }
-        //        catch (IOException e)
-        //        {
-        //            Console.WriteLine(e.Message);
-        //            return StatusCode(StatusCodes.Status500InternalServerError);
-        //        }
-        //    }
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
 
-        //    [HttpPut]
-        //    public async Task<IActionResult> Update([FromBody] KhachHangModel khachhang)
-        //    {
-        //        try
-        //        {
-        //            if (!ModelState.IsValid)
-        //            {
-        //                return BadRequest(ModelState);
-        //            }
-        //            var result = await _khachhangData.Update(khachhang);
-        //            if (result == 1)
-        //            {
-        //                return Ok(new
-        //                {
-        //                    success = true,
-        //                    data = khachhang
-        //                });
-        //            }
-        //            return NotFound(new
-        //            {
-        //                success = false,
-        //                error = "Customer not found"
-        //            });
-        //        }
-        //        catch
-        //        {
-        //            return StatusCode(StatusCodes.Status500InternalServerError);
-        //        }
-        //    }
+        [HttpPut]
+        public IActionResult Update([FromBody] KhachHangModel khachhang)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
 
-        //    [HttpDelete("{id}")]
-        //    public async Task<IActionResult> Delete(string id)
-        //    {
-        //        if (id == null)
-        //        {
-        //            return BadRequest(new
-        //            {
-        //                success = false,
-        //                error = "Customer id not found"
-        //            });
-        //        }
-        //        try
-        //        {
-        //            var khachhang = await _khachhangData.Delete(id);
-        //            if (khachhang == null)
-        //            {
-        //                return NotFound(new
-        //                {
-        //                    success = false,
-        //                    error = "Customer not found"
-        //                });
-        //            }
-        //            return Ok(new
-        //            {
-        //                success = true,
-        //                data = khachhang
-        //            });
-        //        }
-        //        catch (IOException e)
-        //        {
-        //            Console.WriteLine(e.Message);
-        //            return StatusCode(StatusCodes.Status500InternalServerError);
-        //        }
-        //    }
+                var KhachHang = this.khachHangService.GetKhachHang(khachhang.CMND);
+                if(KhachHang != null)
+                {
+                    khachHangRepository.Update(khachhang);
+                }
+                return Ok(new
+                {
+                    success = true
+
+                });
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
 }
