@@ -15,7 +15,7 @@ namespace QLGT_API.Repository
 
         public UserModel GetUser(string cmnd)
         {
-            return context.ACCOUNT.FirstOrDefault(ww => ww.Cmnd == cmnd);
+            return context.ACCOUNT.FirstOrDefault(ww => ww.CMND == cmnd);
         }
     }
 }

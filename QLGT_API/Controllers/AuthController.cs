@@ -82,24 +82,27 @@ namespace QLGT_API.Controllers
             if (user != null)
             {
                 UserModel userModel = new UserModel();
-                userModel.Cmnd = command.Username;
-                userModel.Password = HashHelper.Hash(command.Password);
-                userModel.MA_KHACH_HANG = user.MA_KHACH_HANG;
 
-                try
-                {
+               
+                userModel.CMND = command.Username;
+                userModel.PASS_WORD = HashHelper.Hash(command.Password);
+                userModel.IS_ADMIN = 0;
+                userModel.MA_KHACH_HANG = user.MA_KHACH_HANG;          
+               
 
-                    userRepository.Create(userModel);
-                    registerView.code = 200;
-                    registerView.message = "create user successfully";
-                }
-                catch
-                {
-                    registerView.code = 400;
-                    registerView.message = "create user Failed";
-                }
-            }            
-            return registerView;
+                this.userRepository.Create(userModel);
+                registerView.code = 200;
+                registerView.message = "create user successfully";
+                return registerView;
+            }
+            else
+            {
+                registerView.code = 400;
+                registerView.message = "create user Failed";
+                return registerView;
+            }
+                        
+            
         }
     }
 }
