@@ -19,6 +19,8 @@ using QLGT_API.Repository;
 using QLGT_API.Services;
 using QLGT_API.Constants;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace QLGT_API
 {
@@ -36,10 +38,10 @@ namespace QLGT_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddCors(c =>
-            {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
-            });
+            //services.AddCors(c =>
+            //{
+            //    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            //});
             services.AddDbContextPool<QLGTDBContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("QLGTDB"));
@@ -47,10 +49,11 @@ namespace QLGT_API
 
             // Khai báo các service và các Repository đc dùng
             services.AddScoped<UserService, UserService>();
-            services.AddScoped<KhachHangService, KhachHangService>();
             services.AddScoped<UserRepository, UserRepository>();
+            services.AddScoped<KhachHangService, KhachHangService>();
+            services.AddScoped<KhachHangRepository, KhachHangRepository>();            
             services.AddScoped<JWTService, JWTService>();
-            services.AddScoped<KhachHangRepository, KhachHangRepository>();
+            
 
             ////configure strongly typed settings object
             var authSettingsSection = Configuration.GetSection("AuthSettings");
@@ -68,6 +71,19 @@ namespace QLGT_API
 
                 });
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key)
+                    };
+                });
 
             //services.AddScoped<IKhachHangData, SqlKhachHangData>();
             //services.AddScoped<IBangLaiData, SqlBangLaiData>();
@@ -100,12 +116,15 @@ namespace QLGT_API
             //         Path.Combine(Directory.GetCurrentDirectory(), "static")),
             //    RequestPath = "/static"
             //});
+            app.UseCors(AllowAllOriginsPolicy);
 
-            app.UseCors(c => { c.AllowAnyOrigin(); });
+            //app.UseCors(c => { c.AllowAnyOrigin(); });            
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -12,6 +12,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using QLGT_API.Repository;
 using QLGT_API.Commands;
+using QLGT_API.Views;
 
 namespace QLGT_API.Controllers
 {
@@ -38,7 +39,7 @@ namespace QLGT_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                List<KhachHangModel> khachhang = this.khachHangRepository.GetList(pageCommand.PageIndex, pageCommand.PageSize, m => m.HOAT_DONG == 1);
+                ListView<KhachHangModel> khachhang = this.khachHangRepository.GetList(pageCommand.PageIndex, pageCommand.PageSize, m => m.HOAT_DONG == 1);
                 if (khachhang == null)
                 {
                     return NotFound(new

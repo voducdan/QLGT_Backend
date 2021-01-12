@@ -2,6 +2,7 @@
 using QLGT_API.Commands;
 using QLGT_API.Models;
 using QLGT_API.Repository;
+using QLGT_API.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace QLGT_API.Controllers
             this.khachHangRepository = khachHangRepository;
         }
 
-        public List<KhachHangModel> GetListUser([FromQuery] PageCommand pageCommand)
+        public ListView<KhachHangModel> GetListUser([FromQuery] PageCommand pageCommand)
         {
            
                 var list = khachHangRepository.GetList(pageCommand.PageIndex, pageCommand.PageSize, ww => ww.HOAT_DONG ==0);
