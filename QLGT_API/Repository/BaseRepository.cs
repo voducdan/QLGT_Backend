@@ -36,7 +36,7 @@ namespace QLGT_API.Repository
             return  Data;
         }
 
-        public void Creat(T entity)
+        public void Create(T entity)
         {
             context.Set<T>().Add(entity);
             context.SaveChanges();

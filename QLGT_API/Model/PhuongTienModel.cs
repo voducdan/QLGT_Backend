@@ -9,9 +9,9 @@ namespace QLGT_API.Model
     public class PhuongTienModel
     {
         [Key]
-        public string MA_PHUONG_TIEN { get; set; }
+        public int MA_PHUONG_TIEN { get; set; }
         [Required]
-        public string MA_KHACH_HANG { get; set; }
+        public int MA_KHACH_HANG { get; set; }
         [Required]
         public int MA_LOAI_PHUONG_TIEN { get; set; }
 
