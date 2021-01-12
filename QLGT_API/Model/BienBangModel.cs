@@ -10,9 +10,7 @@ namespace QLGT_API.Model
     {
         [Key]
         public int MA_BIEN_BANG { get; set; }
-        [Required]
         public int MA_KHACH_HANG { get; set; }
-        [Required]
         public int MA_SO_CONG_AN { get; set; }
         [Required]
         public DateTime NGAY_LAP { get; set; }

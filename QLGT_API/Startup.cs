@@ -57,6 +57,8 @@ namespace QLGT_API
             services.AddScoped<KhachHangRepository, KhachHangRepository>();            
             services.AddScoped<JWTService, JWTService>();
             services.AddScoped<KhachHangRepository, KhachHangRepository>();
+            services.AddScoped<BangLaiService, BangLaiService>();
+            services.AddScoped<BangLaiRepository, BangLaiRepository>();
             services.AddScoped<BienBangRepository, BienBangRepository>();
             
 
@@ -77,6 +79,8 @@ namespace QLGT_API
                 });
             });
 
+            //services.AddScoped<IKhachHangData, SqlKhachHangData>();
+            services.AddScoped<IBangLaiData, SqlBangLaiData>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
