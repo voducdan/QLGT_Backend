@@ -21,13 +21,17 @@ namespace QLGT_API.Controllers
         // Khai bao cac service va repository su dung 
         private UserService userService;
         private UserRepository userRepository;
+        private KhachHangRepository khachHangRepository;
+        private KhachHangService khachHangService;
         private JWTService jWTService;
         private AuthSettings authSettings;
 
-        public AuthController(UserService userService, UserRepository userRepository, JWTService jWTService, IOptions<AuthSettings> authSettings) : base()
+        public AuthController(UserService userService, UserRepository userRepository, KhachHangRepository khachHangRepository, KhachHangService khachHangService, JWTService jWTService, IOptions<AuthSettings> authSettings) :base()
         {
             this.userService = userService;
             this.userRepository = userRepository;
+            this.khachHangRepository = khachHangRepository;
+            this.khachHangService = khachHangService;
             this.jWTService = jWTService;
             this.authSettings = authSettings.Value;
         }
@@ -48,21 +52,18 @@ namespace QLGT_API.Controllers
         public LoginView Login([FromBody] LoginCommand command)
         {
             LoginView loginView = new LoginView();
-            var user = userService.GetUser(command.Username);
-            if (HashHelper.Verify(command.Password, user.Password))
+            var account = userService.GetUser(command.Username);
+            if (HashHelper.Verify(command.Password, account.PASS_WORD))
             {
                 loginView.code = 200;
-                loginView.AccessToken = ProcessLogin(user);
+                loginView.AccessToken = ProcessLogin(account);
                 loginView.message = "Login Sucessful";
-
-
             }
             else
             {
                 loginView.code = 400;
                 loginView.AccessToken = null;
                 loginView.message = "Login Fail";
-
             }
             return loginView;
         }
@@ -72,28 +73,45 @@ namespace QLGT_API.Controllers
         [Route("register")]
         [HttpPost]
         public RegisterView register([FromBody] CreateUserCommand command)
-        {
+        {            
             RegisterView registerView = new RegisterView();
-            UserModel userModel = new UserModel();
-            //user.id = command.id;
-            userModel.Username = command.Username;
-            userModel.Email = command.Email;
-            userModel.Password = HashHelper.Hash(command.Password);
-            //user.isadmin = false;
-            //user.isadmin = command.isadmin;
-            try
+            // Lay ra Khach Hang co CMND
+            var user = khachHangService.GetKhachHang(command.Username);
+            if (user != null)
             {
-                userRepository.Create(userModel);
-                registerView.code = 200;
-                registerView.message = "create user successfully";
-            }
-            catch (System.Exception)
-            {
+                UserModel userModel = new UserModel();
+                UserModel userModel_temp = new UserModel();
 
+                userModel_temp = this.userService.GetUser(command.Username);
+                if (userModel_temp == null)
+                {
+                    userModel.CMND = command.Username;
+                    userModel.PASS_WORD = HashHelper.Hash(command.Password);
+                    userModel.IS_ADMIN = 0;
+                    userModel.MA_KHACH_HANG = user.MA_KHACH_HANG;
+
+
+                    this.userRepository.Create(userModel);
+                    registerView.code = 200;
+                    registerView.message = "create user successfully";
+                    return registerView;
+                }
+                else
+                {
+                    registerView.code = 4001;
+                    registerView.message = "User is exists";
+                    return registerView;
+
+                }             
+                
+            }
+            else
+            {
                 registerView.code = 400;
                 registerView.message = "create user Failed";
-            }
-            return registerView;
+                return registerView;
+            }                    
+            
         }
     }
 }

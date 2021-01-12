@@ -1,4 +1,5 @@
 ﻿using QLGT_API.Data;
+using QLGT_API.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,12 @@ namespace QLGT_API.Repository
             return context.Set<T>().FirstOrDefault(expression);
         }
 
-        public List<T> GetList(int? pageIndex, int? pageSize, Expression<Func<T, bool>> expression)
+        public ListView<T> GetList(int? pageIndex, int? pageSize, Expression<Func<T, bool>> expression)
         {
             var count = context.Set<T>().Count(expression);
+            var maxPageIndex = (count / pageSize) + 1;
+            int? Pre=0;
+            int? Next=0;
             List<T> Data;
             if (pageIndex.HasValue && pageSize.HasValue)
             {
@@ -33,7 +37,15 @@ namespace QLGT_API.Repository
             {
                 Data = context.Set<T>().Where(expression).ToList();
             }
-            return Data;
+            
+            if (pageIndex >= 1 && pageIndex <= maxPageIndex)
+            {
+                Next = pageIndex + 1;
+                Pre = pageIndex - 1;
+            }
+             
+
+            return  new ListView<T> { Data= Data, PrePage= Pre, NextPage= Next };
         }
 
         public void Create(T entity)

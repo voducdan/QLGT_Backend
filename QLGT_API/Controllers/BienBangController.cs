@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using QLGT_API.Commands;
 using QLGT_API.Model;
 using QLGT_API.Repository;
+using QLGT_API.Views;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,7 +33,7 @@ namespace QLGT_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                List<BienBangModel> bienbang = this.bienBangRepository.GetList(pageCommand.PageIndex, pageCommand.PageSize, m => m.HOAT_DONG == 1);
+                ListView<BienBangModel> bienbang = this.bienBangRepository.GetList(pageCommand.PageIndex, pageCommand.PageSize, m => m.HOAT_DONG == 1);
                 if (bienbang == null)
                 {
                     return NotFound(new

@@ -19,6 +19,8 @@ using QLGT_API.Repository;
 using QLGT_API.Services;
 using QLGT_API.Constants;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace QLGT_API
 {
@@ -51,9 +53,12 @@ namespace QLGT_API
             services.AddScoped<BienBangService, BienBangService>();
             services.AddScoped<UserRepository, UserRepository>();
             services.AddScoped<UserRepository, UserRepository>();
+            services.AddScoped<KhachHangService, KhachHangService>();
+            services.AddScoped<KhachHangRepository, KhachHangRepository>();            
             services.AddScoped<JWTService, JWTService>();
             services.AddScoped<KhachHangRepository, KhachHangRepository>();
             services.AddScoped<BienBangRepository, BienBangRepository>();
+            
 
             ////configure strongly typed settings object
             var authSettingsSection = Configuration.GetSection("AuthSettings");
@@ -71,6 +76,19 @@ namespace QLGT_API
 
                 });
             });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key)
+                    };
+                });
 
             //services.AddScoped<IKhachHangData, SqlKhachHangData>();
             //services.AddScoped<IBangLaiData, SqlBangLaiData>();
@@ -103,12 +121,13 @@ namespace QLGT_API
             //         Path.Combine(Directory.GetCurrentDirectory(), "static")),
             //    RequestPath = "/static"
             //});
-
-            app.UseCors(c => { c.AllowAnyOrigin(); });
+            app.UseCors(AllowAllOriginsPolicy);                      
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
