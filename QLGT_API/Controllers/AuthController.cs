@@ -26,7 +26,7 @@ namespace QLGT_API.Controllers
         private JWTService jWTService;
         private AuthSettings authSettings;
 
-        public AuthController(UserService userService, UserRepository userRepository, KhachHangRepository khachHangRepository, KhachHangService khachHangService, JWTService jWTService, IOptions<AuthSettings> authSettings)
+        public AuthController(UserService userService, UserRepository userRepository, KhachHangRepository khachHangRepository, KhachHangService khachHangService, JWTService jWTService, IOptions<AuthSettings> authSettings) :base()
         {
             this.userService = userService;
             this.userRepository = userRepository;
@@ -36,72 +36,81 @@ namespace QLGT_API.Controllers
             this.authSettings = authSettings.Value;
         }
 
-        //private string ProcessLogin(UserModel user)
-        //{
-        //    // Time died
-        //    var accessTokenExpiration = DateTime.Now.AddMinutes(ExpiredTime.AccessTokenExpirationTime);
-        //    // ceate accessToken
-        //    var accessToken = jWTService.GenerateAccessToken(authSettings.AuthSecret, user, accessTokenExpiration);
+        private string ProcessLogin(UserModel user)
+        {
+            // Time died
+            var accessTokenExpiration = DateTime.Now.AddMinutes(ExpiredTime.AccessTokenExpirationTime);
+            // ceate accessToken
+            var accessToken = jWTService.GenerateAccessToken(authSettings.AuthSecret, user, accessTokenExpiration);
 
-        //    return accessToken;
-        //}
-
-
-        //[Route("login")]
-        //[HttpPost]
-        //public LoginView Login([FromBody] LoginCommand command)
-        //{
-        //    LoginView loginView = new LoginView();
-        //    var user = userService.GetUser(command.Username);
-        //    if (HashHelper.Verify(command.Password, user.Password))
-        //    {
-        //        loginView.code = 200;
-        //        loginView.AccessToken = ProcessLogin(user);
-        //        loginView.message = "Login Sucessful";
+            return accessToken;
+        }
 
 
-        //    }
-        //    else
-        //    {
-        //        loginView.code = 400;
-        //        loginView.AccessToken = null;
-        //        loginView.message = "Login Fail";
-
-        //    }
-        //    return loginView;
-        //}
+        [Route("login")]
+        [HttpPost]
+        public LoginView Login([FromBody] LoginCommand command)
+        {
+            LoginView loginView = new LoginView();
+            var account = userService.GetUser(command.Username);
+            if (HashHelper.Verify(command.Password, account.PASS_WORD))
+            {
+                loginView.code = 200;
+                loginView.AccessToken = ProcessLogin(account);
+                loginView.message = "Login Sucessful";
+            }
+            else
+            {
+                loginView.code = 400;
+                loginView.AccessToken = null;
+                loginView.message = "Login Fail";
+            }
+            return loginView;
+        }
 
 
         // create new user
         [Route("register")]
         [HttpPost]
         public RegisterView register([FromBody] CreateUserCommand command)
-        {
+        {            
             RegisterView registerView = new RegisterView();
+            // Lay ra Khach Hang co CMND
             var user = khachHangService.GetKhachHang(command.Username);
             if (user != null)
             {
                 UserModel userModel = new UserModel();
+                UserModel userModel_temp = new UserModel();
 
-               
-                userModel.CMND = command.Username;
-                userModel.PASS_WORD = HashHelper.Hash(command.Password);
-                userModel.IS_ADMIN = 0;
-                userModel.MA_KHACH_HANG = user.MA_KHACH_HANG;          
-               
+                userModel_temp = this.userService.GetUser(command.Username);
+                if (userModel_temp == null)
+                {
+                    userModel.CMND = command.Username;
+                    userModel.PASS_WORD = HashHelper.Hash(command.Password);
+                    userModel.IS_ADMIN = 0;
+                    userModel.MA_KHACH_HANG = user.MA_KHACH_HANG;
 
-                this.userRepository.Create(userModel);
-                registerView.code = 200;
-                registerView.message = "create user successfully";
-                return registerView;
+
+                    this.userRepository.Create(userModel);
+                    registerView.code = 200;
+                    registerView.message = "create user successfully";
+                    return registerView;
+                }
+                else
+                {
+                    registerView.code = 4001;
+                    registerView.message = "User is exists";
+                    return registerView;
+
+                }             
+                
             }
             else
             {
                 registerView.code = 400;
                 registerView.message = "create user Failed";
                 return registerView;
-            }
-                        
+            }                    
             
         }
     }

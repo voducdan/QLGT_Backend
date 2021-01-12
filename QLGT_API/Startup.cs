@@ -38,10 +38,7 @@ namespace QLGT_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            //services.AddCors(c =>
-            //{
-            //    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
-            //});
+            
             services.AddDbContextPool<QLGTDBContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("QLGTDB"));
@@ -116,9 +113,7 @@ namespace QLGT_API
             //         Path.Combine(Directory.GetCurrentDirectory(), "static")),
             //    RequestPath = "/static"
             //});
-            app.UseCors(AllowAllOriginsPolicy);
-
-            //app.UseCors(c => { c.AllowAnyOrigin(); });            
+            app.UseCors(AllowAllOriginsPolicy);                      
 
             app.UseHttpsRedirection();
 
