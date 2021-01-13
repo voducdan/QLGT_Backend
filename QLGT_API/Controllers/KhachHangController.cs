@@ -160,10 +160,16 @@ namespace QLGT_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var KhachHang = this.khachHangService.GetKhachHang(khachhang.CMND);
-                if(KhachHang != null)
+                var kh = this.khachHangService.GetKhachHang_id(khachhang.MA_KHACH_HANG);
+                if(kh != null)
                 {
-                    khachHangRepository.Update(khachhang);
+                    //kh = khachhang;
+                    kh.DIA_CHI = khachhang.DIA_CHI;
+                    kh.EMAIL = khachhang.EMAIL;
+                    kh.SDT = khachhang.SDT;
+                    kh.TEN_KHACH_HANG = khachhang.TEN_KHACH_HANG;
+                    kh.HOAT_DONG = khachhang.HOAT_DONG;
+                    khachHangRepository.Update(kh);
                 }
                 return Ok(new
                 {
