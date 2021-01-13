@@ -29,7 +29,7 @@ namespace QLGT_API.Data
                 {
                     int? PagePrev = PageIndex - 1;
                     int? PageNext = PageIndex + 1;
-
+                    
                     int to = PageSize.Value * PageIndex.Value;
                     int from = PageSize.Value * (PageIndex.Value - 1);
                     var query = await _db.PHUONG_TIEN_VIEW.FromSqlRaw($@"WITH DerTable AS(
@@ -44,7 +44,9 @@ namespace QLGT_API.Data
                     join KHACH_HANG kh on KH.MA_KHACH_HANG = PT.MA_KHACH_HANG 
                     join LOAI_PHUONG_TIEN lpt on lpt.MA_LOAI_PHUONG_TIEN = PT.MA_LOAI_PHUONG_TIEN
                     WHERE RowNumber BETWEEN {from} AND {to}").ToListAsync();
-                    return new ListView<PhuongTienViewModel>() { Data = query, PrePage=PagePrev,NextPage=PageNext };
+                    int maxsize = query.Count();
+                    if (PageNext > (maxsize / PageSize) + 1) PageNext = 0;
+                    return new ListView<PhuongTienViewModel>() { Data = query, PrePage=PagePrev,NextPage=PageNext ,CurrPage=PageIndex,LastPage= (maxsize /PageSize)+1};
                 }
             }
             return null;

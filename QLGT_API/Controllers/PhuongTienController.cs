@@ -29,7 +29,7 @@ namespace QLGT_API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromBody] PageCommand pageCommand)
+        public async Task<IActionResult> GetAll([FromQuery] PageCommand pageCommand)
         {
             try
             {
