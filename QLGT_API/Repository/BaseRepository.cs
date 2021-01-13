@@ -1,5 +1,8 @@
 ﻿using QLGT_API.Data;
+using QLGT_API.Models;
+using QLGT_API.Views;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -16,26 +19,42 @@ namespace QLGT_API.Repository
             this.context = context;
         }
 
-        public T Get(Expression<Func<T, bool>> expression)
+        public T? Get(Expression<Func<T, bool>> expression)
         {
 
             return context.Set<T>().FirstOrDefault(expression);
 
         }
 
-        public List<T> GetList(int? pageIndex, int? pageSize, Expression<Func<T, bool>> expression)
+        public ListView<T> GetList(int? pageIndex, int? pageSize, Expression<Func<T, bool>> expression)
         {
             var count = context.Set<T>().Count(expression);
+            var maxPageIndex = (count / pageSize) + 1;
+            int? Pre=0;
+            int? Next=0;
             List<T> Data;
             if (pageIndex.HasValue && pageSize.HasValue)
             {
-                Data = context.Set<T>().Where(expression).Skip((pageIndex.Value * pageSize.Value)-pageSize.Value).Take(pageSize.Value).ToList();
+                Data = context.Set<T>().Where(expression).Skip((pageIndex.Value * pageSize.Value) - pageSize.Value).Take(pageSize.Value).ToList();
             }
             else
             {
                 Data = context.Set<T>().Where(expression).ToList();
             }
-            return  Data;
+           
+
+            if (pageIndex >= 1 && pageIndex <= maxPageIndex)
+            {                
+                Pre = pageIndex - 1;
+            }
+            if (pageIndex >= 1 && pageIndex < maxPageIndex)
+            {
+                Next = pageIndex + 1;                
+            }
+            
+             
+            return  new ListView<T> { Data= Data, CurrPage= pageIndex, PrePage= Pre, NextPage= Next, LastPage= maxPageIndex };
+
         }
 
         public void Create(T entity)

@@ -2,6 +2,7 @@
 using QLGT_API.Constants;
 using QLGT_API.Model;
 using QLGT_API.Models;
+using QLGT_API.Repository;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,11 +15,13 @@ namespace QLGT_API.Services
 {
     public class JWTService
     {
+        private UserService userService;
+
         public string GenerateAccessToken(string authSecret, UserModel userModel, DateTime accessTokenExpiration)
         {
 
             var claims = new[] {
-                new Claim(Key.JWTUserIdKey, userModel.ToString()),
+                new Claim(Key.JWTUserIdKey, userModel.ID_ACCOUNT.ToString()),
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSecret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -27,6 +30,23 @@ namespace QLGT_API.Services
                                               signingCredentials: creds);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        
+
+        public UserModel GetUser(string token)
+        {
+
+            UserModel? user = null;
+            var validator = new JwtSecurityTokenHandler();
+            var jwtToken = validator.ReadJwtToken(token);
+            var userClaim = jwtToken.Claims.FirstOrDefault(ww => ww.Type == Key.JWTUserIdKey);
+            if (userClaim != null)
+            {
+                int userId = Convert.ToInt32(userClaim.Value);
+                user = userService.GetUser_id(userId);
+                if (user != null) return user;
+                
+            }
+           return null;
+        }       
+
     }
 }

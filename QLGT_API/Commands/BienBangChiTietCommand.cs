@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 
 namespace QLGT_API.Commands
 {
-    public class CreateUserCommand
+    public class BienBangChiTietCommand
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
     }
 }

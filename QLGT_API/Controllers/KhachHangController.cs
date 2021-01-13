@@ -12,6 +12,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using QLGT_API.Repository;
 using QLGT_API.Commands;
+using QLGT_API.Model;
+using QLGT_API.Views;
 
 namespace QLGT_API.Controllers
 {
@@ -38,7 +40,7 @@ namespace QLGT_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                List<KhachHangModel> khachhang = this.khachHangRepository.GetList(pageCommand.PageIndex, pageCommand.PageSize, m => m.HOAT_DONG == 1);
+                ListView<KhachHangModel> khachhang = this.khachHangRepository.GetList(pageCommand.PageIndex, pageCommand.PageSize, m => m.HOAT_DONG == 1);
                 if (khachhang == null)
                 {
                     return NotFound(new
@@ -89,7 +91,7 @@ namespace QLGT_API.Controllers
                 return Ok(new
                 {
                     success = true,
-                    data = khachhang
+                    khachhang
                 });
             }
             catch
@@ -121,24 +123,24 @@ namespace QLGT_API.Controllers
                     return BadRequest(ModelState);
                 }
                 var KhachHang = this.khachHangService.GetKhachHang(command.CMND);
-                if (KhachHang == null)
-                {
-                    this.khachHangRepository.Create(kh);
-                    return Ok(new
-                    {
-                        success = true
-                        
-                    }) ; 
-                }
                 if (KhachHang != null)
                 {
-                    return BadRequest(new
+                    return Ok(new
                     {
                         success = false,
                         error = "CMND is exist"
                     });
                 }
-                return StatusCode(StatusCodes.Status500InternalServerError);
+
+                if (KhachHang == null)
+                {
+                    this.khachHangRepository.Create(kh);                    
+                }
+                return Ok(new
+                {
+                    success = true
+
+                });
 
             }
             catch (IOException e)
@@ -158,8 +160,17 @@ namespace QLGT_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var KhachHang = this.khachHangService.GetKhachHang(khachhang.CMND);
-                khachHangRepository.Update(KhachHang);
+                var kh = this.khachHangService.GetKhachHang_id(khachhang.MA_KHACH_HANG);
+                if(kh != null)
+                {
+                    //kh = khachhang;
+                    kh.DIA_CHI = khachhang.DIA_CHI;
+                    kh.EMAIL = khachhang.EMAIL;
+                    kh.SDT = khachhang.SDT;
+                    kh.TEN_KHACH_HANG = khachhang.TEN_KHACH_HANG;
+                    kh.HOAT_DONG = khachhang.HOAT_DONG;
+                    khachHangRepository.Update(kh);
+                }
                 return Ok(new
                 {
                     success = true
