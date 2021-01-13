@@ -81,10 +81,11 @@ namespace QLGT_API.Controllers
                         error = "Report not found"
                     });
                 }
+                var danhSachLoiViPham = this.bienBangService.GetDanhSachLoiViPham(bienbang.MA_BIEN_BANG);
                 return Ok(new
                 {
                     success = true,
-                    data = bienbang
+                    data = danhSachLoiViPham
                 });
             }
             catch (IOException e)

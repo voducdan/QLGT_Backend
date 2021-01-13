@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ namespace QLGT_API.Model
 {
     public class LoiViPhamModel
     {
+        [Key]
         public int MA_LOI_VI_PHAM { get; set; }
         public int MA_NHOM_VI_PHAM { get; set; }
         public int MA_LOAI_PHUONG_TIEN { get; set; }
