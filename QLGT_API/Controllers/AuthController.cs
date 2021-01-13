@@ -48,6 +48,7 @@ namespace QLGT_API.Controllers
 
 
         [Route("login")]
+
         [HttpPost]
         public LoginView Login([FromBody] LoginCommand command)
         {
@@ -89,6 +90,7 @@ namespace QLGT_API.Controllers
             
             return loginView;
         }
+
 
 
 

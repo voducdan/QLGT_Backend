@@ -12,20 +12,20 @@ namespace QLGT_API.Models
         [Key]
         public int MA_KHACH_HANG { get; set; }
         [Required]
-        public string TEN_KHACH_HANG { get; set; }
-        public string EMAIL { get; set; }
+        public string? TEN_KHACH_HANG { get; set; }
+        public string? EMAIL { get; set; }
         [Required]
-        public string DIA_CHI { get; set; }
+        public string? DIA_CHI { get; set; }
         [Required]
-        public string SDT { get; set; }
+        public string? SDT { get; set; }
         [Required]
         public int TUOI { get; set; }
         [Required]
-        public string GIOI_TINH { get; set; }
+        public string? GIOI_TINH { get; set; }
         [Required]
-        public string CMND { get; set; }
+        public string? CMND { get; set; }
         [Required]
-        public string QUOC_TICH { get; set; }
+        public string? QUOC_TICH { get; set; }
         public DateTime NGAY_TAO { get; set; }
         public DateTime NGAY_CAP_NHAT { get; set; }
         [Required]

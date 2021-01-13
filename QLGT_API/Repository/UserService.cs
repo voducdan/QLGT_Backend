@@ -12,7 +12,6 @@ namespace QLGT_API.Repository
         public UserService(QLGTDBContext context) : base(context)
         {
         }
-
         public UserModel GetUser(string cmnd)
         {
             return context.ACCOUNT.FirstOrDefault(ww => ww.CMND == cmnd);
@@ -22,5 +21,6 @@ namespace QLGT_API.Repository
         {
             return context.ACCOUNT.FirstOrDefault(ww => ww.ID_ACCOUNT == id);
         }
+
     }
 }

@@ -21,7 +21,9 @@ namespace QLGT_API.Repository
 
         public T? Get(Expression<Func<T, bool>> expression)
         {
+
             return context.Set<T>().FirstOrDefault(expression);
+
         }
 
         public ListView<T> GetList(int? pageIndex, int? pageSize, Expression<Func<T, bool>> expression)
