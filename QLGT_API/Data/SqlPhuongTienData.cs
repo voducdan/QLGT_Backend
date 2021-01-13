@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using QLGT_API.Utils;
 using System.IO;
 using QLGT_API.Model;
+using QLGT_API.Views;
 
 namespace QLGT_API.Data
 {
@@ -20,7 +21,7 @@ namespace QLGT_API.Data
         {
             _db = db;
         }
-        public async Task<IEnumerable<PhuongTienViewModel>> GetAll(int? PageSize, int? PageIndex)
+        public async Task<ListView<PhuongTienViewModel>> GetAll(int? PageSize, int? PageIndex)
         {
             if (_db != null)
             {
@@ -43,7 +44,7 @@ namespace QLGT_API.Data
                     join KHACH_HANG kh on KH.MA_KHACH_HANG = PT.MA_KHACH_HANG 
                     join LOAI_PHUONG_TIEN lpt on lpt.MA_LOAI_PHUONG_TIEN = PT.MA_LOAI_PHUONG_TIEN
                     WHERE RowNumber BETWEEN {from} AND {to}").ToListAsync();
-                    return query;
+                    return new ListView<PhuongTienViewModel>() { Data = query, PrePage=PagePrev,NextPage=PageNext };
                 }
             }
             return null;
