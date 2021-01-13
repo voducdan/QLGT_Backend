@@ -102,6 +102,7 @@ namespace QLGT_API.Controllers
             var user = khachHangService.GetKhachHang(command.Username);
             if (user != null)
             {
+              
                 UserModel userModel = new UserModel();
                 UserModel userModel_temp = new UserModel();
 

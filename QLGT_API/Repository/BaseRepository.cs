@@ -1,6 +1,8 @@
 ﻿using QLGT_API.Data;
+using QLGT_API.Models;
 using QLGT_API.Views;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;

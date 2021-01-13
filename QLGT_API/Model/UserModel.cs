@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace QLGT_API.Model
 {
     public class UserModel
-    {
+    {        
         [Key]
         public int ID_ACCOUNT { get; set; }
         public string CMND { get; set; }
