@@ -20,6 +20,7 @@ namespace QLGT_API.Data
 
         public DbSet<LoaiPhuongTienModel> LOAI_PHUONG_TIEN { get; set; }
         public DbSet<PhuongTienModel> PHUONG_TIEN { get; set; }
+        public DbSet<PhuongTienViewModel> PHUONG_TIEN_VIEW { get; set; }
 
         public DbSet<UserModel> USER { get; set; }
 

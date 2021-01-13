@@ -83,7 +83,7 @@ namespace QLGT_API.Controllers
             //user.isadmin = command.isadmin;
             try
             {
-                userRepository.Creat(userModel);
+                userRepository.Create(userModel);
                 registerView.code = 200;
                 registerView.message = "create user successfully";
             }

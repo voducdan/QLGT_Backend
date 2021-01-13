@@ -7,7 +7,7 @@ namespace QLGT_API.Model
 {
     public class NhomLoiViPhamModel
     {
-        public string MA_NHOM_VI_PHAM { get; set; }
+        public int MA_NHOM_VI_PHAM { get; set; }
         public string TEN_NHOM_VI_PHAM { get; set; }
         public DateTime NGAY_TAO { get; set; }
         public DateTime NGAY_CAP_NHAT { get; set; }

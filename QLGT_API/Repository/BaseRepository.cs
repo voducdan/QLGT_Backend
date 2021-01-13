@@ -18,7 +18,9 @@ namespace QLGT_API.Repository
 
         public T Get(Expression<Func<T, bool>> expression)
         {
+
             return context.Set<T>().FirstOrDefault(expression);
+
         }
 
         public List<T> GetList(int? pageIndex, int? pageSize, Expression<Func<T, bool>> expression)
@@ -27,7 +29,7 @@ namespace QLGT_API.Repository
             List<T> Data;
             if (pageIndex.HasValue && pageSize.HasValue)
             {
-                Data = context.Set<T>().Where(expression).Skip(pageIndex.Value * pageSize.Value).Take(pageSize.Value).ToList();
+                Data = context.Set<T>().Where(expression).Skip((pageIndex.Value * pageSize.Value)-pageSize.Value).Take(pageSize.Value).ToList();
             }
             else
             {
@@ -36,7 +38,7 @@ namespace QLGT_API.Repository
             return  Data;
         }
 
-        public void Creat(T entity)
+        public void Create(T entity)
         {
             context.Set<T>().Add(entity);
             context.SaveChanges();

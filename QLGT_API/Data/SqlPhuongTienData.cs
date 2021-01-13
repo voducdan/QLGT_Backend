@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using QLGT_API.Utils;
 using System.IO;
+using QLGT_API.Model;
 
 namespace QLGT_API.Data
 {
@@ -19,41 +20,49 @@ namespace QLGT_API.Data
         {
             _db = db;
         }
-        public async Task<IEnumerable<PhuongTienModel>> GetAll()
+        public async Task<IEnumerable<PhuongTienViewModel>> GetAll(int? PageSize, int? PageIndex)
         {
             if (_db != null)
             {
-                var query = await _db.PHUONG_TIEN.FromSqlRaw("select * from PHUONG_TIEN").ToListAsync();
+                if (PageSize.HasValue && PageIndex.HasValue)
+                {
+                    int? PagePrev = PageIndex - 1;
+                    int? PageNext = PageIndex + 1;
+
+                    int to = PageSize.Value * PageIndex.Value;
+                    int from = PageSize.Value * (PageIndex.Value - 1);
+                    var query = await _db.PHUONG_TIEN_VIEW.FromSqlRaw($@"WITH DerTable AS(
+					SELECT MA_PHUONG_TIEN,MA_KHACH_HANG,MA_LOAI_PHUONG_TIEN,SO_PHUONG_TIEN,SO_MAY,NGAY_DANG_KY ,MAU_SON,NHAN_HIEU,DUNG_TICH,BIEN_SO_XE,NGAY_DAU_DANG_KY,GHI_CHU,NGAY_TAO,NGAY_CAP_NHAT,HOAT_DONG,
+
+					ROW_NUMBER() OVER(ORDER BY MA_PHUONG_TIEN) AS RowNumber
+						FROM 
+							PHUONG_TIEN 
+				)
+                   select pt.MA_PHUONG_TIEN,kh.TEN_KHACH_HANG,lpt.TEN_LOAI_PHUONG_TIEN,pt.SO_PHUONG_TIEN,pt. SO_MAY,NGAY_DANG_KY ,pt. MAU_SON,NHAN_HIEU,pt.DUNG_TICH,BIEN_SO_XE,pt.NGAY_DAU_DANG_KY,GHI_CHU,pt.NGAY_TAO,pt.NGAY_CAP_NHAT,pt.HOAT_DONG
+					 from DerTable pt
+                    join KHACH_HANG kh on KH.MA_KHACH_HANG = PT.MA_KHACH_HANG 
+                    join LOAI_PHUONG_TIEN lpt on lpt.MA_LOAI_PHUONG_TIEN = PT.MA_LOAI_PHUONG_TIEN
+                    WHERE RowNumber BETWEEN {from} AND {to}").ToListAsync();
+                    return query;
+                }
+            }
+            return null;
+        }
+        public async Task<PhuongTienViewModel> Get(int id)
+        {
+            if (_db != null)
+            {
+                var temp = $@"select pt.MA_PHUONG_TIEN,kh.TEN_KHACH_HANG,lpt.TEN_LOAI_PHUONG_TIEN,pt.SO_PHUONG_TIEN,pt. SO_MAY,NGAY_DANG_KY ,pt. MAU_SON,NHAN_HIEU,pt.DUNG_TICH,BIEN_SO_XE,pt.NGAY_DAU_DANG_KY,GHI_CHU,pt.NGAY_TAO,pt.NGAY_CAP_NHAT,pt.HOAT_DONG
+					 from PHUONG_TIEN pt
+                    join KHACH_HANG kh on KH.MA_KHACH_HANG = PT.MA_KHACH_HANG 
+                    join LOAI_PHUONG_TIEN lpt on lpt.MA_LOAI_PHUONG_TIEN = PT.MA_LOAI_PHUONG_TIEN
+					Where pt.MA_PHUONG_TIEN='{id}'";
+                var query = await _db.PHUONG_TIEN_VIEW.FromSqlRaw(temp).FirstOrDefaultAsync();
                 return query;
             }
             return null;
         }
-        public async Task<PhuongTienModel> Get(int id)
-        {
-        if (_db != null)
-        {
-            var query = await (
-                            from pt in _db.PHUONG_TIEN
-                            where pt.MA_PHUONG_TIEN == id
-                            select new PhuongTienModel
-                            {
-                                MA_PHUONG_TIEN = pt.MA_PHUONG_TIEN,
-                                MA_KHACH_HANG = pt.MA_KHACH_HANG,
-                                MA_LOAI_PHUONG_TIEN = pt.MA_LOAI_PHUONG_TIEN,
-                                SO_PHUONG_TIEN = pt.SO_PHUONG_TIEN,
-                                SO_MAY = pt.SO_MAY,
-                                NGAY_DANG_KY = pt.NGAY_DANG_KY,
-                                MAU_SON = pt.MAU_SON,
-                                NHAN_HIEU = pt.NHAN_HIEU,
-                                DUNG_TICH = pt.DUNG_TICH,
-                                BIEN_SO_XE=pt.BIEN_SO_XE,
-                                NGAY_DAU_DANG_KY=pt.NGAY_DAU_DANG_KY
-                            }).FirstOrDefaultAsync();
-            return query;
-        }
-        return null;
-        }
-        public async Task<int> Update(PhuongTienModel phuongtien)
+            public async Task<int> Update(PhuongTienModel phuongtien)
         {
             if (_db != null)
             {
@@ -66,9 +75,31 @@ namespace QLGT_API.Data
             return 0;
         }
 
-        public Task<PhuongTienModel> Get(string id)
+        public async Task<int> Delete(int id)
         {
-            throw new NotImplementedException();
+            if (_db != null)
+            {
+                var phuongtien = await Get(id);
+                if (phuongtien != null)
+                {
+                    _db.PHUONG_TIEN.RemoveRange(_db.PHUONG_TIEN.Where(delPhuongTien => delPhuongTien.MA_PHUONG_TIEN == id));
+                    await _db.SaveChangesAsync();
+                    return 1;
+                }
+            }
+            return 0;
+        }
+        public async Task<int> Create(PhuongTienModel phuongtien)
+        {
+            phuongtien.NGAY_TAO = DateTime.Now;
+            phuongtien.NGAY_CAP_NHAT = DateTime.Now;
+            if (_db != null)
+            {
+                await _db.PHUONG_TIEN.AddAsync(phuongtien);
+                await _db.SaveChangesAsync();
+                return 1;
+            }
+            return 0;
         }
     }
 }

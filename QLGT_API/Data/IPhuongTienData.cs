@@ -1,4 +1,5 @@
-﻿using QLGT_API.Models;
+﻿using QLGT_API.Model;
+using QLGT_API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,13 @@ namespace QLGT_API.Data
 {
     public interface IPhuongTienData
     {
-        Task<IEnumerable<PhuongTienModel>> GetAll();
-        //Task<string> Create(KhachHangModel khachhang);
-        Task<PhuongTienModel> Get(string id);
+        //Task<IEnumerable<PhuongTienModel>> GetAll();
+        Task<IEnumerable<PhuongTienViewModel>> GetAll(int? PageSize, int? PageIndex);
+        Task<PhuongTienViewModel> Get(int id);
+        Task<int> Create(PhuongTienModel phuongtien);
+        //Task<int> Delete(PhuongTienModel phuongtien);
+     
+        Task<int> Delete(int id);
         Task<int> Update(PhuongTienModel phuongtien);
         //Task<int> Update(KhachHangModel khachhang);
         //Task<KhachHangModel> Delete(string id);

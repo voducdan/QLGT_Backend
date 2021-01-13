@@ -20,15 +20,16 @@ namespace QLGT_API.Controllers
     [Route("api/vehicles")]
     public class PhuongTienController : ControllerBase
     {
-        private PhuongTienRepository phuongTienRepository;
-      
-        public PhuongTienController(PhuongTienRepository phuongTienRepository)
+        private readonly IPhuongTienData _phuongtienData;
+        private KhachHangService _khachHangService;
+        public PhuongTienController(IPhuongTienData phuongTienData, KhachHangService khachHangService)
         {
-            this.phuongTienRepository = phuongTienRepository;
+            this._phuongtienData = phuongTienData;
+            this._khachHangService = khachHangService;
         }
 
         [HttpGet]
-        public IActionResult GetListPhuongTien([FromBody] PageCommand pageCommand)
+        public async Task<IActionResult> GetAll([FromBody] PageCommand pageCommand)
         {
             try
             {
@@ -36,14 +37,13 @@ namespace QLGT_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var phuongtien = this.phuongTienRepository.GetList(pageCommand.PageIndex, pageCommand.PageSize, ww => ww.HOAT_DONG == 0);
-               
+                var phuongtien = await _phuongtienData.GetAll(pageCommand.PageSize, pageCommand.PageIndex);
                 if (phuongtien == null)
                 {
                     return NotFound(new
                     {
                         success = false,
-                        error = "Could not find any vehicle"
+                        error = "Could not find any lisence"
                     });
                 }
                 return Ok(new
@@ -59,14 +59,14 @@ namespace QLGT_API.Controllers
             }
         }
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
             if (id.ToString() == null)
             {
                 return BadRequest(new
                 {
                     success = false,
-                    error = "Vehicle id not found"
+                    error = "Vehicles id not found"
                 });
             }
             try
@@ -75,56 +75,143 @@ namespace QLGT_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var phuongTien = this.phuongTienRepository.Get(w => w.MA_PHUONG_TIEN == id);
-                if (phuongTien == null)
+                var phuongtien = await _phuongtienData.Get(id);
+                if (phuongtien == null)
                 {
                     return NotFound(new
                     {
                         success = false,
-                        error = "Vehicle not found"
+                        error = "Vehicles not found"
                     });
                 }
                 return Ok(new
                 {
                     success = true,
-                    data = phuongTien
+                    data = phuongtien
                 });
             }
-            catch
+            catch (IOException e)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
-        //[HttpPut]
-        //public IActionResult Update([FromBody] UpdatePhuongTienCommand updatePhuongTienCommand)
-        //{
-        //    try
-        //    {
-        //        if (!ModelState.IsValid)
-        //        {
-        //            return BadRequest(ModelState);
-        //        }
-        //        var result = this.phuongTienRepository.Update(updatePhuongTienCommand.MAU_SON,);
-        //        if (result == 1)
-        //        {
-        //            return Ok(new
-        //            {
-        //                success = true,
-        //                data = phuongtien
-        //            });
-        //        }
-        //        return NotFound(new
-        //        {
-        //            success = false,
-        //            error = "Vehicle not found"
-        //        });
-        //    }
-        //    catch
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError);
-        //    }
-        //}
 
-    } 
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] PhuongTienModel phuongtien)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var result = await _phuongtienData.Update(phuongtien);
+                if (result == 1)
+                {
+                    return Ok(new
+                    {
+                        success = true,
+                        data = phuongtien
+                    });
+                }
+                return NotFound(new
+                {
+                    success = false,
+                    error = " not found"
+                });
+            }
+            catch 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody]  CreatePhuongTienCommand command)
+        {
+            PhuongTienModel phuongTien = new PhuongTienModel();
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var khachhang = this._khachHangService.GetKhachHang(command.CMND);
+                if (khachhang != null)
+                {
+                    phuongTien.MA_KHACH_HANG = khachhang.MA_KHACH_HANG;
+                    phuongTien.MA_LOAI_PHUONG_TIEN = command.MA_LOAI_PHUONG_TIEN;
+                    phuongTien.HOAT_DONG = 1;
+                    phuongTien.MAU_SON = command.MAU_SON;
+                    phuongTien.SO_PHUONG_TIEN = command.SO_PHUONG_TIEN;
+                    phuongTien.SO_MAY = command.SO_MAY;
+                    phuongTien.NHAN_HIEU = command.NHAN_HIEU;
+                    phuongTien.BIEN_SO_XE = command.BIEN_SO_XE;
+                    phuongTien.DUNG_TICH = command.DUNG_TICH;
+                    phuongTien.GHI_CHU = command.GHI_CHU;
+                    phuongTien.NGAY_CAP_NHAT = DateTime.Now;
+                    phuongTien.NGAY_DANG_KY = DateTime.Now;
+                    phuongTien.NGAY_DAU_DANG_KY = DateTime.Now;
+                    phuongTien.NGAY_TAO = DateTime.Now;
+                    var result = await _phuongtienData.Create(phuongTien);
+                    if (result==1)
+                    {
+                        return Ok(new
+                        {
+                            success = true,
+                            data = phuongTien
+                        });
+                    }
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError);
+
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<PhuongTienModel>> Delete(int id)
+        {
+            if (id.ToString() == null)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Vehicles id not found"
+                });
+            }
+            try
+            {
+                var phuongtien = await _phuongtienData.Delete(id);
+                if (phuongtien == null)
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = "Vehicles not found"
+                    });
+                }
+                return Ok(new
+                {
+                    success = true,
+                    data = phuongtien
+                });
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+       
+
+    }
 
 }

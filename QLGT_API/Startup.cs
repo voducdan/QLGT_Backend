@@ -47,6 +47,7 @@ namespace QLGT_API
 
             // Khai báo các service và các Repository đc dùng
             services.AddScoped<UserService, UserService>();
+            services.AddScoped<KhachHangService, KhachHangService>();
             services.AddScoped<UserRepository, UserRepository>();
             services.AddScoped<JWTService, JWTService>();
             services.AddScoped<KhachHangRepository, KhachHangRepository>();
