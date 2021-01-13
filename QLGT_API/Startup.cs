@@ -51,21 +51,20 @@ namespace QLGT_API
             services.AddScoped<UserService, UserService>();
             services.AddScoped<UserRepository, UserRepository>();
 
-            services.AddScoped<KhachHangRepository, KhachHangRepository>();
             services.AddScoped<KhachHangService, KhachHangService>();
+            services.AddScoped<KhachHangRepository, KhachHangRepository>();
 
             services.AddScoped<BienBangService, BienBangService>();
             services.AddScoped<BienBangRepository, BienBangRepository>();
 
+            services.AddScoped<JWTService, JWTService>();
+
             services.AddScoped<BangLaiService, BangLaiService>();
             services.AddScoped<BangLaiRepository, BangLaiRepository>();
+            
+            services.AddScoped<LoiViPhamRepository, LoiViPhamRepository>();
+            services.AddScoped<LoiViPhamService, LoiViPhamService>();
 
-            
-
-            services.AddScoped<JWTService, JWTService>();
-            
-            
-            
 
             ////configure strongly typed settings object
             var authSettingsSection = Configuration.GetSection("AuthSettings");
