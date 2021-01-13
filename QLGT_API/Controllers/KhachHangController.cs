@@ -123,24 +123,24 @@ namespace QLGT_API.Controllers
                     return BadRequest(ModelState);
                 }
                 var KhachHang = this.khachHangService.GetKhachHang(command.CMND);
-                if (KhachHang == null)
-                {
-                    this.khachHangRepository.Create(kh);
-                    return Ok(new
-                    {
-                        success = true
-                        
-                    }) ; 
-                }
                 if (KhachHang != null)
                 {
-                    return BadRequest(new
+                    return Ok(new
                     {
                         success = false,
                         error = "CMND is exist"
                     });
                 }
-                return StatusCode(StatusCodes.Status500InternalServerError);
+
+                if (KhachHang == null)
+                {
+                    this.khachHangRepository.Create(kh);                    
+                }
+                return Ok(new
+                {
+                    success = true
+
+                });
 
             }
             catch (IOException e)
