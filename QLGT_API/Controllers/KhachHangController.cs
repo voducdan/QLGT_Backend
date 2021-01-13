@@ -35,7 +35,7 @@ namespace QLGT_API.Controllers
         public IActionResult GetAll([FromQuery] PageCommand pageCommand)
         {
             try
-            {             
+            {
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
@@ -52,7 +52,7 @@ namespace QLGT_API.Controllers
                 return Ok(new
                 {
                     success = true,
-                    khachhang
+                    data = khachhang
                 });
             }
             catch (IOException e)
@@ -91,7 +91,7 @@ namespace QLGT_API.Controllers
                 return Ok(new
                 {
                     success = true,
-                    data = khachhang
+                    khachhang
                 });
             }
             catch

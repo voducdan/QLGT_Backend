@@ -10,7 +10,8 @@ namespace QLGT_API.Views
         public List<T> Data { get; set; }
          
         public int? PrePage { get; set; }
-        
+        public int? CurrPage { get; set; }
+
         public int? NextPage { get; set; }
         public int? LastPage { get; set; }
 
