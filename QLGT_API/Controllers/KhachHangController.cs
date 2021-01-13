@@ -161,6 +161,13 @@ namespace QLGT_API.Controllers
                 }
 
                 var kh = this.khachHangService.GetKhachHang_id(khachhang.MA_KHACH_HANG);
+                if (kh == null)
+                {
+                    return Ok(new
+                    {
+                        success = false
+                    }); 
+                }    
                 if(kh != null)
                 {
                     //kh = khachhang;
@@ -170,12 +177,14 @@ namespace QLGT_API.Controllers
                     kh.TEN_KHACH_HANG = khachhang.TEN_KHACH_HANG;
                     kh.HOAT_DONG = khachhang.HOAT_DONG;
                     khachHangRepository.Update(kh);
+                    
                 }
                 return Ok(new
                 {
                     success = true
 
                 });
+
             }
             catch
             {
