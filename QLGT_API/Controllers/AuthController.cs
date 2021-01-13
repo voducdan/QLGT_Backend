@@ -68,8 +68,31 @@ namespace QLGT_API.Controllers
             return loginView;
         }
 
+        [Route("loginToken")]
+        [HttpPost]
+        public LoginView LoginToken([FromQuery] string token)
+        {
+            LoginView loginView = new LoginView();
+            var user = jWTService.GetUser(token);
+            if (user == null)
+            {
+                loginView.code = 400;
+                loginView.AccessToken = null;
+                loginView.message = "Login Fail";
+            }
+            //if (user != null)
+            //{
+            //    loginView.code = 200;
+            //    loginView.AccessToken = token;
+            //    loginView.message = "Login Sucessful";
+            //}
+            
+            return loginView;
+        }
 
-        // create new user
+
+
+         // create new user
         [Route("register")]
         [HttpPost]
         public RegisterView register([FromBody] CreateUserCommand command)
@@ -109,7 +132,7 @@ namespace QLGT_API.Controllers
             else
             {
                 registerView.code = 400;
-                registerView.message = "create user Failed";
+                registerView.message = "CMND is not exists or user Failed";
                 return registerView;
             }                    
             
