@@ -17,7 +17,7 @@ namespace QLGT_API.Repository
             this.context = context;
         }
 
-        public T Get(Expression<Func<T, bool>> expression)
+        public T? Get(Expression<Func<T, bool>> expression)
         {
             return context.Set<T>().FirstOrDefault(expression);
         }
@@ -31,21 +31,24 @@ namespace QLGT_API.Repository
             List<T> Data;
             if (pageIndex.HasValue && pageSize.HasValue)
             {
-                Data = context.Set<T>().Where(expression).Skip((pageIndex.Value * pageSize.Value)-pageSize.Value).Take(pageSize.Value).ToList();
+                Data = context.Set<T>().Where(expression).Skip((pageIndex.Value * pageSize.Value) - pageSize.Value).Take(pageSize.Value).ToList();
             }
             else
             {
                 Data = context.Set<T>().Where(expression).ToList();
             }
-
-            if (pageIndex >= 1 && pageIndex <= maxPageIndex)
+            if (pageIndex < maxPageIndex)
             {
                 Next = pageIndex + 1;
+            }
+
+            if (pageIndex >= 1 && pageIndex <= maxPageIndex)
+            {                
                 Pre = pageIndex - 1;
             }
              
 
-            return  new ListView<T> { Data= Data, PrePage= Pre, NextPage= Next };
+            return  new ListView<T> { Data= Data, PrePage= Pre, NextPage= Next, LastPage=maxPageIndex };
         }
 
         public void Create(T entity)
