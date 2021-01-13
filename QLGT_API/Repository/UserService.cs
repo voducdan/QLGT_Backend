@@ -17,5 +17,10 @@ namespace QLGT_API.Repository
         {
             return context.ACCOUNT.FirstOrDefault(ww => ww.CMND == cmnd);
         }
+
+        public UserModel GetUser_id(int id)
+        {
+            return context.ACCOUNT.FirstOrDefault(ww => ww.ID_ACCOUNT == id);
+        }
     }
 }
