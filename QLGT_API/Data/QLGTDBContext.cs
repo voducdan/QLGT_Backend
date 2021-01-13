@@ -18,8 +18,8 @@ namespace QLGT_API.Data
         public DbSet<KhachHangModel> KHACH_HANG { get; set; }
         public DbSet<LoaiBangLaiModel> LOAI_BANG_LAI { get; set; }
         public DbSet<KhachHang_BangLaiModel> BANGLAI_KHACHHANG { get; set; }
-        public DbSet<UserModel> USER { get; set; }
         public DbSet<BienBangModel> BIEN_BANG { get; set; }
         public DbSet<UserModel> ACCOUNT { get; set; }
+        public DbSet<LoiViPhamModel> LOI_VI_PHAM { get; set; }
     }
 }

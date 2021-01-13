@@ -19,9 +19,11 @@ namespace QLGT_API.Controllers
     public class BangLaiController : ControllerBase
     {
         private readonly IBangLaiData _banglaiData;
-        public BangLaiController(IBangLaiData bangLaiData)
+        private readonly KhachHangService khachhangService;
+        public BangLaiController(IBangLaiData bangLaiData, KhachHangService khachhangService)
         {
             this._banglaiData = bangLaiData;
+            this.khachhangService = khachhangService;
         }
 
         // GET: api/lisence
@@ -133,25 +135,40 @@ namespace QLGT_API.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] BangLaiModel bl)
+        public async Task<IActionResult> Create([FromBody] CreateBangLaiCommand cbl)
         {
             try
             {
+
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
-                var maKhachHang = await _banglaiData.Create(bl);
-                if (bl.MA_BANG_LAI.ToString() != null)
+
+                BangLaiModel blm = new BangLaiModel();
+                var kh = khachhangService.GetKhachHang(cbl.CMND);
+                if (kh != null)
                 {
-                    return Ok(new
+                    blm.MA_LOAI_BANG_LAI = cbl.MA_LOAI_BANG_LAI;
+                    blm.NOI_CAP_NCK = cbl.NOI_CAP_NCK;
+                    blm.THOI_HAN_SU_DUNG = cbl.THOI_HAN_SU_DUNG;
+                    blm.NGAY_CAP_NCK = DateTime.Now;
+                    blm.NGAY_CAP_NHAT = DateTime.Now;
+                    blm.NGAY_TAO = DateTime.Now;
+                    blm.HOAT_DONG = 1;
+                    blm.MA_KHACH_HANG = kh.MA_KHACH_HANG;
+                    blm.MA_LOAI_BANG_LAI = cbl.MA_LOAI_BANG_LAI;
+                    var result = await _banglaiData.Create(blm);
+                    if (result == 1)
                     {
-                        success = true,
-                        data = bl
-                    });
+                        return Ok(new
+                        {
+                            success = true,
+                            data = blm
+                        });
+                    }
                 }
                 return StatusCode(StatusCodes.Status500InternalServerError);
-
             }
             catch (IOException e)
             {

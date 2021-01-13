@@ -49,18 +49,19 @@ namespace QLGT_API
 
             // Khai báo các service và các Repository đc dùng
             services.AddScoped<UserService, UserService>();
+
             services.AddScoped<KhachHangService, KhachHangService>();
+
             services.AddScoped<BienBangService, BienBangService>();
             services.AddScoped<UserRepository, UserRepository>();
-            services.AddScoped<UserRepository, UserRepository>();
-            services.AddScoped<KhachHangService, KhachHangService>();
             services.AddScoped<KhachHangRepository, KhachHangRepository>();            
             services.AddScoped<JWTService, JWTService>();
-            services.AddScoped<KhachHangRepository, KhachHangRepository>();
             services.AddScoped<BangLaiService, BangLaiService>();
             services.AddScoped<BangLaiRepository, BangLaiRepository>();
             services.AddScoped<BienBangRepository, BienBangRepository>();
-            
+            services.AddScoped<LoiViPhamRepository, LoiViPhamRepository>();
+            services.AddScoped<LoiViPhamService, LoiViPhamService>();
+
 
             ////configure strongly typed settings object
             var authSettingsSection = Configuration.GetSection("AuthSettings");
