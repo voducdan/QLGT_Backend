@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using QLGT_API.Utils;
 using QLGT_API.Commands;
 using Microsoft.AspNetCore.Mvc;
+using QLGT_API.Views;
 
 namespace QLGT_API.Data
 {
@@ -17,15 +18,18 @@ namespace QLGT_API.Data
         public SqlBangLaiData(QLGTDBContext db)
         {
             _db = db;
-        }
-        public async Task<IEnumerable<KhachHang_BangLaiModel>> GetAll(int? PageSize, int? PageIndex)
+        } 
+        public async Task<ListView<KhachHang_BangLaiModel>> GetAll(int? PageSize, int? PageIndex)
         {
             if (_db != null)
             {
                 if (PageSize.HasValue && PageIndex.HasValue)
                 {
+                    int? prePage = PageIndex - 1;
+                    int? nextPage = PageIndex + 1;
                     int to = PageSize.Value * PageIndex.Value;
                     int from = PageSize.Value * (PageIndex.Value - 1);
+                    //var temp = _db.BANG_LAI.FromSqlRaw($@"select count(MA_BANG_LAI) from BANG_LAI").ToList();
                     var query = await _db.BANGLAI_KHACHHANG.FromSqlRaw($@"WITH DerTable AS(
 					SELECT
 						MA_BANG_LAI,MA_LOAI_BANG_LAI,MA_KHACH_HANG, NGAY_CAP_NCK, NOI_CAP_NCK, THOI_HAN_SU_DUNG, NGAY_TAO, HOAT_DONG, NGAY_CAP_NHAT,
@@ -38,9 +42,8 @@ namespace QLGT_API.Data
                     join KHACH_HANG KH on KH.MA_KHACH_HANG = BL.MA_KHACH_HANG 
                     join LOAI_BANG_LAI LBL on LBL.MA_LOAI_BANG_LAI = BL.MA_LOAI_BANG_LAI
                     WHERE RowNumber BETWEEN {from} AND {to}").ToListAsync();
-                    return query;
+                    return new ListView<KhachHang_BangLaiModel>() { Data=query, PrePage=prePage, NextPage=nextPage};
                 }
-               
             }
             return null;
         }
