@@ -56,6 +56,44 @@ namespace QLGT_API.Controllers
         }
 
         [HttpGet("{id}")]
+        public IActionResult Get_kh(int id)
+        {
+            if (id.ToString() == null)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Report id not found"
+                });
+            }
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var bienbang = this.bienBangRepository.Get(w => w.MA_BIEN_BANG == id);
+                if (bienbang == null)
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = "Report not found"
+                    });
+                }
+                return Ok(new
+                {
+                    success = true,
+                    data = bienbang
+                });
+            }
+            catch (IOException e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
             if (id.ToString() == null)
