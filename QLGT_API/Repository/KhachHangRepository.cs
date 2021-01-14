@@ -12,5 +12,9 @@ namespace QLGT_API.Repository
         public KhachHangRepository(QLGTDBContext context) : base(context)
         {
         }
+        public KhachHangModel Get(int id)
+        {
+            return context.Set<KhachHangModel>().FirstOrDefault(m => m.MA_KHACH_HANG == id);
+        }
     }
 }

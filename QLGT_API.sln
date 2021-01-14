@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLGT_API", "QLGT_API\QLGT_API.csproj", "{D4091BCA-4EFD-451C-AAA3-C8DD4261872E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QLGT_API", "QLGT_API\QLGT_API.csproj", "{D4091BCA-4EFD-451C-AAA3-C8DD4261872E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{1BC80885-DD83-49A8-BB96-FCE67083D1C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{67C966EA-74E1-488E-A988-7CA0463AB93D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{D4091BCA-4EFD-451C-AAA3-C8DD4261872E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4091BCA-4EFD-451C-AAA3-C8DD4261872E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4091BCA-4EFD-451C-AAA3-C8DD4261872E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67C966EA-74E1-488E-A988-7CA0463AB93D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67C966EA-74E1-488E-A988-7CA0463AB93D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67C966EA-74E1-488E-A988-7CA0463AB93D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67C966EA-74E1-488E-A988-7CA0463AB93D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{67C966EA-74E1-488E-A988-7CA0463AB93D} = {1BC80885-DD83-49A8-BB96-FCE67083D1C6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {598DB987-AD6F-4479-91E5-65CD7C60A06F}
