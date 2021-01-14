@@ -124,7 +124,7 @@ namespace QLGT_API.Controllers
                             data = phuongtien
                         });
                     }
-                    return NotFound(new
+                    return Ok(new
                     {
                         success = false,
                         error = " not found"
@@ -133,7 +133,7 @@ namespace QLGT_API.Controllers
             }
             catch 
             {
-                return NotFound(new
+                return Ok(new
                 {
                     success = false,
                     error = " not found"
@@ -180,7 +180,7 @@ namespace QLGT_API.Controllers
                         });
                     }
                 }
-                return NotFound(new
+                return Ok(new
                 {
                     success = false,
                     error = " not found"
@@ -189,7 +189,7 @@ namespace QLGT_API.Controllers
             }
             catch 
             {
-                return NotFound(new
+                return Ok(new
                 {
                     success = false,
                     error = " not found"
@@ -258,7 +258,7 @@ namespace QLGT_API.Controllers
                     data = phuongtien
                 });
             }
-            catch (IOException e)
+            catch 
             {
                 return NotFound(new
                 {
