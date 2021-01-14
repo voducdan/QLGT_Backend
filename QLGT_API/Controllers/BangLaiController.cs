@@ -168,7 +168,7 @@ namespace QLGT_API.Controllers
             }
             catch
             {
-                return NotFound(new
+                return Ok(new
                 {
                     success = false,
                     error = "Could not find any lisence"
@@ -223,7 +223,7 @@ namespace QLGT_API.Controllers
             }
             catch
             {
-                return BadRequest(new
+                return Ok(new
                 {
                     success = false,
                     error = "Lesence id not found"
@@ -262,7 +262,7 @@ namespace QLGT_API.Controllers
             }
             catch
             {
-                return BadRequest(new
+                return Ok(new
                 {
                     success = false,
                     error = "Lesence id not found"
