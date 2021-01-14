@@ -53,8 +53,11 @@ namespace QLGT_API.Controllers
             }
             catch (IOException e)
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Could not find any lisence"
+                });
             }
         }
 
@@ -92,9 +95,13 @@ namespace QLGT_API.Controllers
                     data = banglai
                 });
             }
-            catch (IOException e)
+            catch 
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Lisence not found"
+                });
             }
         }
 
@@ -122,10 +129,13 @@ namespace QLGT_API.Controllers
                     data = loaibanglai
                 });
             }
-            catch (IOException e)
+            catch
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Could not find any lisence type"
+                });
             }
         }
 
@@ -142,7 +152,7 @@ namespace QLGT_API.Controllers
                     return BadRequest(ModelState);
                 }
                 var result = await _banglaiData.Update(bl);
-                if (result == 1)
+                if (result == true)
                 {
                     return Ok(new
                     {
@@ -156,9 +166,13 @@ namespace QLGT_API.Controllers
                     error = "Lisence not found"
                 });
             }
-            catch (IOException e)
+            catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Could not find any lisence"
+                });
             }
         }
 

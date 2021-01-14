@@ -17,6 +17,11 @@ namespace QLGT_API.Services
     {
         private UserService userService;
 
+        public JWTService(UserService userService)
+        {
+            this.userService = userService;
+        }
+
         public string GenerateAccessToken(string authSecret, UserModel userModel, DateTime accessTokenExpiration)
         {
 
@@ -34,7 +39,7 @@ namespace QLGT_API.Services
         public UserModel GetUser(string token)
         {
 
-            UserModel? user = null;
+            UserModel? user = new UserModel();
             var validator = new JwtSecurityTokenHandler();
             var jwtToken = validator.ReadJwtToken(token);
             var userClaim = jwtToken.Claims.FirstOrDefault(ww => ww.Type == Key.JWTUserIdKey);

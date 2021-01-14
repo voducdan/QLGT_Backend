@@ -87,17 +87,13 @@ namespace QLGT_API.Data
             return null;
         }
 
-    public async Task<int> Update(BangLaiModel bl)
+    public async Task<bool> Update(BangLaiModel bl)
         {
-            if (_db != null)
-            {
                 bl.NGAY_CAP_NHAT = DateTime.Now;
                 bl.NGAY_TAO = (DateTime)bl.NGAY_TAO;
                 _db.BANG_LAI.Update(bl);
-                await _db.SaveChangesAsync();
-                return 1;
-            }
-            return 0;
+                var del = await _db.SaveChangesAsync();
+                return del > 0;
         }
 
         public async Task<int> Delete(int id)

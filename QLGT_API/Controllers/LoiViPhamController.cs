@@ -102,7 +102,7 @@ namespace QLGT_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var loivipham = this.loiViPhamRepository.Get(w => w.TEN_LOI_VI_PHAM.Contains(test.NAME) == true);
+                var loivipham = this.loiViPhamRepository.GetAll(w => w.TEN_LOI_VI_PHAM.Contains(test.NAME) == true);
                 if (loivipham == null)
                 {
                     return NotFound(new
