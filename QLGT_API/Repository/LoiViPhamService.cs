@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using QLGT_API.Data;
 using QLGT_API.Model;
 using System;
@@ -21,17 +22,15 @@ namespace QLGT_API.Repository
             return loivipham;
         }
 
-        //public LoiViPhamModel GetName(string Name)
-        //{
-        //    var nameLaw = from m in context.LOI_VI_PHAM
-        //                 select m.TEN_LOI_VI_PHAM;
-
-        //    if (!String.IsNullOrEmpty(searchString))
-        //    {
-        //        movies = movies.Where(s => s.Title.Contains(searchString));
-        //    }
-
-        //    return View(await movies.ToListAsync());
-        //}
+        public List<LoiViPhamModel> GetName(string Name)
+        {
+            var nameLaw = from m in context.LOI_VI_PHAM
+                          select m;
+            if (!String.IsNullOrEmpty(Name))
+            {
+                nameLaw = nameLaw.Where(s => s.TEN_LOI_VI_PHAM.Contains(Name));
+            }
+            return nameLaw.ToList();
+        }
     }
 }

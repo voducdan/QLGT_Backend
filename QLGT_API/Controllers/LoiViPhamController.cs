@@ -93,19 +93,35 @@ namespace QLGT_API.Controllers
             }
         }
 
-        //[HttpGet("{name}")]
-        //public IActionResult Get(string Name)
-        //{
-        //    try
-        //    {
-        //        //var nameLaw = from n in LoiViPhamService
-        //    }
-        //    catch
-        //    {
-
-        //    }
-        //    return null;
-        //}
+        //[HttpGet("Name")]
+        [Route("test")]
+        public IActionResult Get([FromBody] TestCommand test) { 
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var loivipham = this.loiViPhamRepository.Get(w => w.TEN_LOI_VI_PHAM.Contains(test.NAME) == true);
+                if (loivipham == null)
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = "Law not found"
+                    });
+                }
+                return Ok(new
+                {
+                    success = true,
+                    data = loivipham
+                });
+            }
+            catch (IOException e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
 
         [HttpPost]
         public IActionResult Create([FromBody] CreateLoiViPhamCommand command)
