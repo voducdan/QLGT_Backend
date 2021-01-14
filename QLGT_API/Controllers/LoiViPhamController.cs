@@ -93,6 +93,20 @@ namespace QLGT_API.Controllers
             }
         }
 
+        //[HttpGet("{name}")]
+        //public IActionResult Get(string Name)
+        //{
+        //    try
+        //    {
+        //        //var nameLaw = from n in LoiViPhamService
+        //    }
+        //    catch
+        //    {
+
+        //    }
+        //    return null;
+        //}
+
         [HttpPost]
         public IActionResult Create([FromBody] CreateLoiViPhamCommand command)
         {

@@ -98,6 +98,37 @@ namespace QLGT_API.Controllers
             }
         }
 
+        [HttpGet("lisencetype")]
+        public async Task<IActionResult> GetLisenceType()
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var loaibanglai = await _banglaiData.GetLisenceType();
+                if (loaibanglai == null)
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = "Could not find any lisence type"
+                    });
+                }
+                return Ok(new
+                {
+                    success = true,
+                    data = loaibanglai
+                });
+            }
+            catch (IOException e)
+            {
+                Console.WriteLine(e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
         // PUT: api/lisence
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

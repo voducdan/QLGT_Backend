@@ -20,5 +20,18 @@ namespace QLGT_API.Repository
             context.Entry(loivipham).State = EntityState.Detached;
             return loivipham;
         }
+
+        //public LoiViPhamModel GetName(string Name)
+        //{
+        //    var nameLaw = from m in _context.Movie
+        //                 select m;
+
+        //    if (!String.IsNullOrEmpty(searchString))
+        //    {
+        //        movies = movies.Where(s => s.Title.Contains(searchString));
+        //    }
+
+        //    return View(await movies.ToListAsync());
+        //}
     }
 }

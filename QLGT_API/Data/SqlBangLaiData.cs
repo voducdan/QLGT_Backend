@@ -77,6 +77,16 @@ namespace QLGT_API.Data
             return 0;
         }
 
+        public async Task<List<LoaiBangLaiModel>> GetLisenceType()
+        {
+            if(_db != null)
+            {
+                var query = await _db.LOAI_BANG_LAI.FromSqlRaw($@"SELECT MA_LOAI_BANG_LAI, TEN_LOAI_BANG_LAI, MO_TA FROM LOAI_BANG_LAI").ToListAsync();
+                return query;
+            }
+            return null;
+        }
+
     public async Task<int> Update(BangLaiModel bl)
         {
             if (_db != null)

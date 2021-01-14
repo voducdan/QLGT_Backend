@@ -15,5 +15,6 @@ namespace QLGT_API.Data
         Task<int> Update(BangLaiModel kh_bl);
         Task<int> Delete(int id);
         Task<int> Create(BangLaiModel bl);
+        Task<List<LoaiBangLaiModel>> GetLisenceType();
     }
 }
