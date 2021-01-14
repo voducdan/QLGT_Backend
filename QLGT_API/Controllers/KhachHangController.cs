@@ -55,10 +55,13 @@ namespace QLGT_API.Controllers
                     data = khachhang
                 });
             }
-            catch (IOException e)
+            catch 
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Fail"
+                });
             }
         }
 
@@ -96,7 +99,11 @@ namespace QLGT_API.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Fail"
+                });
             }
         }
 
@@ -143,10 +150,13 @@ namespace QLGT_API.Controllers
                 });
 
             }
-            catch (IOException e)
+            catch 
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Fail"
+                });
             }
         }
 

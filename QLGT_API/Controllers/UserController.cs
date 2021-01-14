@@ -52,10 +52,13 @@ namespace QLGT_API.Controllers
                     user
                 });
             }
-            catch (IOException e)
+            catch 
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "faile"
+                });
             }
         }
 
@@ -112,7 +115,11 @@ namespace QLGT_API.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Fail"
+                });
             }
         }
     }
