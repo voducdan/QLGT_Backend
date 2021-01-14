@@ -16,5 +16,6 @@ namespace QLGT_API.Data
         Task<int> Create(PhuongTienModel phuongtien);
         Task<int> Delete(int id);
         Task<int> Update(PhuongTienModel phuongtien);
+        Task<List<LoaiPhuongTienModel>> GetVehicleType();
     }
 }
