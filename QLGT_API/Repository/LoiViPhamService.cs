@@ -23,8 +23,8 @@ namespace QLGT_API.Repository
 
         //public LoiViPhamModel GetName(string Name)
         //{
-        //    var nameLaw = from m in _context.Movie
-        //                 select m;
+        //    var nameLaw = from m in context.LOI_VI_PHAM
+        //                 select m.TEN_LOI_VI_PHAM;
 
         //    if (!String.IsNullOrEmpty(searchString))
         //    {

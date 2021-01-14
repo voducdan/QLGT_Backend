@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace QLGT_API.Controllers
 {
-    [Route("api/law")]
+    [Route("api/laws")]
     [ApiController]
     public class LoiViPhamController : ControllerBase
     {

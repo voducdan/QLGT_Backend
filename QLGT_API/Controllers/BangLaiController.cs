@@ -14,7 +14,7 @@ using QLGT_API.Repository;
 
 namespace QLGT_API.Controllers
 {
-    [Route("api/lisence")]
+    [Route("api/lisences")]
     [ApiController]
     public class BangLaiController : ControllerBase
     {
