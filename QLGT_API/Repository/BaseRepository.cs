@@ -50,26 +50,31 @@ namespace QLGT_API.Repository
             if (pageIndex >= 1 && pageIndex < maxPageIndex)
             {
                 Next = pageIndex + 1;                
-            }
-            
+            }            
              
             return  new ListView<T> { Data= Data, CurrPage= pageIndex, PrePage= Pre, NextPage= Next, LastPage= maxPageIndex };
 
         }
 
+        public List<T> GetAll(Expression<Func<T, bool>> expression)
+        {
+            return context.Set<T>().Where(expression).ToList();
+        }
+
         public void Create(T entity)
         {
             context.Set<T>().Add(entity);
-            context.SaveChanges();
+            context.SaveChanges();           
         }
 
-        public void Update(T entity)
+        public void  Update(T entity)
         {
             context.Set<T>().Update(entity);
             context.SaveChanges();
+          
         }
 
-        public void Delete(T entity)
+        public void  Delete(T entity)
         {
             context.Set<T>().Remove(entity);
             context.SaveChanges();

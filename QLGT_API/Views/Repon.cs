@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace QLGT_API.Views
 {
-    public class LoginView
+    public class Repon
     {
         public int code { get; set; }
-        public string message { get; set; }
-        public int MaKH { get; set; }
-        public string AccessToken { get; set; }
+        public string err { get; set; }
     }
 }

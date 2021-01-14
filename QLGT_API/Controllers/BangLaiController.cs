@@ -14,7 +14,7 @@ using QLGT_API.Repository;
 
 namespace QLGT_API.Controllers
 {
-    [Route("api/lisence")]
+    [Route("api/lisences")]
     [ApiController]
     public class BangLaiController : ControllerBase
     {
@@ -28,7 +28,7 @@ namespace QLGT_API.Controllers
 
         // GET: api/lisence
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromBody] PageCommand pageCommand)
+        public async Task<IActionResult> GetAll([FromQuery] PageCommand pageCommand)
         {
             try
             {
@@ -51,10 +51,13 @@ namespace QLGT_API.Controllers
                     data = banglai
                 });
             }
-            catch (IOException e)
+            catch
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Could not find any lisence"
+                });
             }
         }
 
@@ -92,9 +95,47 @@ namespace QLGT_API.Controllers
                     data = banglai
                 });
             }
-            catch (IOException e)
+            catch 
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Lisence not found"
+                });
+            }
+        }
+
+        [HttpGet("lisencetype")]
+        public async Task<IActionResult> GetLisenceType()
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var loaibanglai = await _banglaiData.GetLisenceType();
+                if (loaibanglai == null)
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = "Could not find any lisence type"
+                    });
+                }
+                return Ok(new
+                {
+                    success = true,
+                    data = loaibanglai
+                });
+            }
+            catch
+            {
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Could not find any lisence type"
+                });
             }
         }
 
@@ -111,7 +152,7 @@ namespace QLGT_API.Controllers
                     return BadRequest(ModelState);
                 }
                 var result = await _banglaiData.Update(bl);
-                if (result == 1)
+                if (result == true)
                 {
                     return Ok(new
                     {
@@ -125,9 +166,13 @@ namespace QLGT_API.Controllers
                     error = "Lisence not found"
                 });
             }
-            catch (IOException e)
+            catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Could not find any lisence"
+                });
             }
         }
 
@@ -167,13 +212,22 @@ namespace QLGT_API.Controllers
                             data = blm
                         });
                     }
+              
                 }
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Lesence id not found"
+                });
+
             }
-            catch (IOException e)
+            catch
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Lesence id not found"
+                });
             }
         }
 
@@ -206,10 +260,13 @@ namespace QLGT_API.Controllers
                     data = banglai
                 });
             }
-            catch (IOException e)
+            catch
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Lesence id not found"
+                });
             }
         }
 
