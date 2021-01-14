@@ -51,7 +51,7 @@ namespace QLGT_API.Controllers
                     data = banglai
                 });
             }
-            catch (IOException e)
+            catch
             {
                 return NotFound(new
                 {
