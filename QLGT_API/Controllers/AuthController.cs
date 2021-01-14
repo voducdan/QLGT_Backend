@@ -53,17 +53,19 @@ namespace QLGT_API.Controllers
         {
             LoginView loginView = new LoginView();
             var account = userService.GetUser(command.Username);
-            if (HashHelper.Verify(command.Password, account.PASS_WORD))
+            if (account != null && HashHelper.Verify(command.Password, account.PASS_WORD))
             {
                 loginView.code = 200;
                 loginView.AccessToken = ProcessLogin(account);
                 loginView.message = "Login Sucessful";
+                loginView.MaKH = account.MA_KHACH_HANG;
             }
             else
             {
                 loginView.code = 400;
                 loginView.AccessToken = null;
                 loginView.message = "Login Fail";
+                loginView.MaKH = 0;
             }
             return loginView;
         }
@@ -79,14 +81,16 @@ namespace QLGT_API.Controllers
                 loginView.code = 400;
                 loginView.AccessToken = null;
                 loginView.message = "Login Fail";
+                loginView.MaKH = 0;
             }
-            //if (user != null)
-            //{
-            //    loginView.code = 200;
-            //    loginView.AccessToken = token;
-            //    loginView.message = "Login Sucessful";
-            //}
-            
+            if (user != null)
+            {   
+                loginView.code = 200;
+                loginView.AccessToken = token;
+                loginView.message = "Login Sucessful";
+                loginView.MaKH = user.MA_KHACH_HANG;
+            }
+
             return loginView;
         }
 

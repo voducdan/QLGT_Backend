@@ -9,6 +9,7 @@ namespace QLGT_API.Views
     {
         public int code { get; set; }
         public string message { get; set; }
+        public int MaKH { get; set; }
         public string AccessToken { get; set; }
     }
 }

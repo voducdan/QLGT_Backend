@@ -17,10 +17,12 @@ namespace QLGT_API.Controllers
     {
         //private BienBangService bienBangService;
         private BienBangRepository bienBangRepository;
+        private DanhSachLoiViPhamRepository danhSachLoiViPhamRepository;
 
-        public KhachHang_BienBangController(BienBangRepository bienBangRepository)
+        public KhachHang_BienBangController(BienBangRepository bienBangRepository, DanhSachLoiViPhamRepository danhSachLoiViPhamRepository)
         {
             this.bienBangRepository = bienBangRepository;
+            this.danhSachLoiViPhamRepository = danhSachLoiViPhamRepository;
         }
 
         [HttpGet("{id}")]
@@ -31,15 +33,35 @@ namespace QLGT_API.Controllers
             {
                 list.Data = bienBangRepository.GetAll(w => w.MA_KHACH_HANG == id);
                 list.MaKH = id;
-                
+
             }
             catch (IOException e)
             {
                 list.Data = null;
-                list.MaKH = id;                
+                list.MaKH = id;
             }
             return list;
         }
+
+        [HttpGet("{id}/{bb}")]
+        public ListDanhSachLoiViPhamBienBangView Get_List_viPham(int bb)
+        {
+            ListDanhSachLoiViPhamBienBangView list = new ListDanhSachLoiViPhamBienBangView();
+            
+            try
+            {
+                list.Data = danhSachLoiViPhamRepository.GetAll(m => m.MA_BIEN_BANG == bb);
+                list.MaBB = bb;
+
+            }
+            catch (IOException e)
+            {
+                list.Data = null;
+                list.MaBB = bb;
+            }
+            return list;
+        }
+
     }
 }
 
