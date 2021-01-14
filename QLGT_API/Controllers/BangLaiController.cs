@@ -212,13 +212,22 @@ namespace QLGT_API.Controllers
                             data = blm
                         });
                     }
+              
                 }
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Lesence id not found"
+                });
+
             }
-            catch (IOException e)
+            catch
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Lesence id not found"
+                });
             }
         }
 
@@ -251,10 +260,13 @@ namespace QLGT_API.Controllers
                     data = banglai
                 });
             }
-            catch (IOException e)
+            catch
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Lesence id not found"
+                });
             }
         }
 
