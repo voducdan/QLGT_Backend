@@ -48,10 +48,13 @@ namespace QLGT_API.Controllers
                     data = loivipham
                 });
             }
-            catch (IOException e)
+            catch 
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Could not find any law"
+                });
             }
         }
 
@@ -87,23 +90,27 @@ namespace QLGT_API.Controllers
                     data = loivipham
                 });
             }
-            catch (IOException e)
+            catch 
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Law not found"
+                });
             }
         }
 
         //[HttpGet("Name")]
-        [Route("test")]
-        public IActionResult Get([FromBody] TestCommand test) { 
+        [Route("search")]
+        public IActionResult Get([FromQuery] TestCommand search) { 
             try
             {
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
-                var loivipham = this.loiViPhamRepository.GetAll(w => w.TEN_LOI_VI_PHAM.Contains(test.NAME) == true);
-                if (loivipham == null)
+                var loivipham = this.loiViPhamRepository.GetAll(w => w.TEN_LOI_VI_PHAM.Contains(search.NAME) == true);
+                if (loivipham.Count() == 0)
                 {
                     return NotFound(new
                     {
@@ -111,15 +118,19 @@ namespace QLGT_API.Controllers
                         error = "Law not found"
                     });
                 }
-                return Ok(new
-                {
-                    success = true,
-                    data = loivipham
-                });
+                    return Ok(new
+                    {
+                        success = true,
+                        data = loivipham
+                    });
             }
-            catch (IOException e)
+            catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Law not found"
+                });
             }
         }
 
