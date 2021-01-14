@@ -28,7 +28,7 @@ namespace QLGT_API.Controllers
 
         // GET: api/lisence
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromBody] PageCommand pageCommand)
+        public async Task<IActionResult> GetAll([FromQuery] PageCommand pageCommand)
         {
             try
             {

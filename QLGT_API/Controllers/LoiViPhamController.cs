@@ -25,7 +25,7 @@ namespace QLGT_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromBody] PageCommand pageCommand)
+        public IActionResult GetAll([FromQuery] PageCommand pageCommand)
         {
             try
             {
@@ -191,5 +191,7 @@ namespace QLGT_API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+
     }
 }

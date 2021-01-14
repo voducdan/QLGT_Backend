@@ -29,7 +29,9 @@ namespace QLGT_API.Data
                     int? nextPage = PageIndex + 1;
                     int to = PageSize.Value * PageIndex.Value;
                     int from = PageSize.Value * (PageIndex.Value - 1);
-                    //var temp = _db.BANG_LAI.FromSqlRaw($@"select count(MA_BANG_LAI) from BANG_LAI").ToList();
+
+                    var temp = await _db.BANG_LAI.FromSqlRaw($@"select MA_BANG_LAI, HOAT_DONG, MA_KHACH_HANG, MA_LOAI_BANG_LAI, NGAY_CAP_NCK, NOI_CAP_NCK, THOI_HAN_SU_DUNG, NGAY_CAP_NHAT, NGAY_TAO from BANG_LAI").ToListAsync();
+                    int maxSize = temp.Count();
                     var query = await _db.BANGLAI_KHACHHANG.FromSqlRaw($@"WITH DerTable AS(
 					SELECT
 						MA_BANG_LAI,MA_LOAI_BANG_LAI,MA_KHACH_HANG, NGAY_CAP_NCK, NOI_CAP_NCK, THOI_HAN_SU_DUNG, NGAY_TAO, HOAT_DONG, NGAY_CAP_NHAT,
@@ -42,7 +44,11 @@ namespace QLGT_API.Data
                     join KHACH_HANG KH on KH.MA_KHACH_HANG = BL.MA_KHACH_HANG 
                     join LOAI_BANG_LAI LBL on LBL.MA_LOAI_BANG_LAI = BL.MA_LOAI_BANG_LAI
                     WHERE RowNumber BETWEEN {from} AND {to}").ToListAsync();
-                    return new ListView<KhachHang_BangLaiModel>() { Data=query, PrePage=prePage, NextPage=nextPage};
+                    int lastPage = (int)(maxSize / PageSize) + 1;
+                    if (nextPage > lastPage) { 
+                        nextPage = 0; 
+                    }
+                    return new ListView<KhachHang_BangLaiModel>() { Data=query, PrePage=prePage, NextPage=nextPage, CurrPage=PageIndex, LastPage= lastPage };
                 }
             }
             return null;
