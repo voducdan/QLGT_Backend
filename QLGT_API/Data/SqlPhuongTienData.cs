@@ -77,7 +77,15 @@ namespace QLGT_API.Data
             }
             return 0;
         }
-
+        public async Task<List<LoaiPhuongTienModel>> GetVehicleType()
+        {
+            if (_db != null)
+            {
+                var query = await _db.LOAI_PHUONG_TIEN.FromSqlRaw($@"SELECT MA_LOAI_PHUONG_TIEN, TEN_LOAI_PHUONG_TIEN FROM LOAI_PHUONG_TIEN").ToListAsync();
+                return query;
+            }
+            return null;
+        }
         public async Task<int> Delete(int id)
         {
             if (_db != null)

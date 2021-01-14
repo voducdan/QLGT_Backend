@@ -195,7 +195,39 @@ namespace QLGT_API.Controllers
                 });
             }
         }
-
+        [HttpGet("vehicletypes")]
+        public async Task<IActionResult> GetVehicleType()
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var loaiphuongtien = await _phuongtienData.GetVehicleType();
+                if (loaiphuongtien == null)
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = "Could not find any vehicle type"
+                    });
+                }
+                return Ok(new
+                {
+                    success = true,
+                    data = loaiphuongtien
+                });
+            }
+            catch
+            {
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Could not find any vehicle type"
+                });
+            }
+        }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<PhuongTienModel>> Delete(int id)
