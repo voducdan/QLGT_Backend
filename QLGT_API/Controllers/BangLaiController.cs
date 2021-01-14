@@ -160,7 +160,7 @@ namespace QLGT_API.Controllers
                         data = bl
                     });
                 }
-                return NotFound(new
+                return OK(new
                 {
                     success = false,
                     error = "Lisence not found"
@@ -214,7 +214,7 @@ namespace QLGT_API.Controllers
                     }
               
                 }
-                return BadRequest(new
+                return OK(new
                 {
                     success = false,
                     error = "Lesence id not found"
