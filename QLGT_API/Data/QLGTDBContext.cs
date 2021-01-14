@@ -37,5 +37,6 @@ namespace QLGT_API.Data
         public DbSet<UserModel> ACCOUNT { get; set; }
         public DbSet<DanhSachLoiViPhamModel> DANH_SACH_LOI_VI_PHAM { get; set; }
         public DbSet<LoiViPhamModel> LOI_VI_PHAM { get; set; }
+        public DbSet<CongAnModel> CONG_AN { get; set; }
     }
 }
