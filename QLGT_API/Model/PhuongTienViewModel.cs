@@ -15,7 +15,11 @@ namespace QLGT_API.Model
         [Required]
         public string? TEN_KHACH_HANG { get; set; }
         [Required]
+        public string? CMND { get; set; }
+        [Required]
         public string? TEN_LOAI_PHUONG_TIEN { get; set; }
+        [Required]
+        public int MA_LOAI_PHUONG_TIEN { get; set; }
         [Required]
         public string? SO_PHUONG_TIEN { get; set; }
         [Required]
