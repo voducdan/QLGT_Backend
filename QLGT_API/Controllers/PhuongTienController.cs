@@ -29,7 +29,7 @@ namespace QLGT_API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromBody] PageCommand pageCommand)
+        public async Task<IActionResult> GetAll([FromQuery] PageCommand pageCommand)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace QLGT_API.Controllers
                     return NotFound(new
                     {
                         success = false,
-                        error = "Could not find any lisence"
+                        error = "Could not find any vehicle"
                     });
                 }
                 return Ok(new
@@ -52,10 +52,13 @@ namespace QLGT_API.Controllers
                     data = phuongtien
                 });
             }
-            catch (IOException e)
+            catch 
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = " not found"
+                });
             }
         }
         [HttpGet("{id}")]
@@ -90,9 +93,13 @@ namespace QLGT_API.Controllers
                     data = phuongtien
                 });
             }
-            catch (IOException e)
+            catch 
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = " not found"
+                });
             }
         }
 
@@ -100,30 +107,37 @@ namespace QLGT_API.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] PhuongTienModel phuongtien)
         {
+    
             try
             {
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
-                var result = await _phuongtienData.Update(phuongtien);
-                if (result == 1)
-                {
-                    return Ok(new
+               
+                    var result = await _phuongtienData.Update(phuongtien);
+                    if (result == 1)
                     {
-                        success = true,
-                        data = phuongtien
+                        return Ok(new
+                        {
+                            success = true,
+                            data = phuongtien
+                        });
+                    }
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = " not found"
                     });
-                }
+                
+            }
+            catch 
+            {
                 return NotFound(new
                 {
                     success = false,
                     error = " not found"
                 });
-            }
-            catch 
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -165,13 +179,20 @@ namespace QLGT_API.Controllers
                         });
                     }
                 }
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = " not found"
+                });
 
             }
-            catch (IOException e)
+            catch 
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = " not found"
+                });
             }
         }
 
@@ -206,8 +227,11 @@ namespace QLGT_API.Controllers
             }
             catch (IOException e)
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = " not found"
+                });
             }
         }
        
