@@ -29,7 +29,9 @@ namespace QLGT_API.Data
                     int? nextPage = PageIndex + 1;
                     int to = PageSize.Value * PageIndex.Value;
                     int from = PageSize.Value * (PageIndex.Value - 1);
-                    //var temp = _db.BANG_LAI.FromSqlRaw($@"select count(MA_BANG_LAI) from BANG_LAI").ToList();
+
+                    var temp = await _db.BANG_LAI.FromSqlRaw($@"select MA_BANG_LAI, HOAT_DONG, MA_KHACH_HANG, MA_LOAI_BANG_LAI, NGAY_CAP_NCK, NOI_CAP_NCK, THOI_HAN_SU_DUNG, NGAY_CAP_NHAT, NGAY_TAO from BANG_LAI").ToListAsync();
+                    int maxSize = temp.Count();
                     var query = await _db.BANGLAI_KHACHHANG.FromSqlRaw($@"WITH DerTable AS(
 					SELECT
 						MA_BANG_LAI,MA_LOAI_BANG_LAI,MA_KHACH_HANG, NGAY_CAP_NCK, NOI_CAP_NCK, THOI_HAN_SU_DUNG, NGAY_TAO, HOAT_DONG, NGAY_CAP_NHAT,
@@ -42,7 +44,11 @@ namespace QLGT_API.Data
                     join KHACH_HANG KH on KH.MA_KHACH_HANG = BL.MA_KHACH_HANG 
                     join LOAI_BANG_LAI LBL on LBL.MA_LOAI_BANG_LAI = BL.MA_LOAI_BANG_LAI
                     WHERE RowNumber BETWEEN {from} AND {to}").ToListAsync();
-                    return new ListView<KhachHang_BangLaiModel>() { Data=query, PrePage=prePage, NextPage=nextPage};
+                    int lastPage = (int)(maxSize / PageSize) + 1;
+                    if (nextPage > lastPage) { 
+                        nextPage = 0; 
+                    }
+                    return new ListView<KhachHang_BangLaiModel>() { Data=query, PrePage=prePage, NextPage=nextPage, CurrPage=PageIndex, LastPage= lastPage };
                 }
             }
             return null;
@@ -71,17 +77,23 @@ namespace QLGT_API.Data
             return 0;
         }
 
-    public async Task<int> Update(BangLaiModel bl)
+        public async Task<List<LoaiBangLaiModel>> GetLisenceType()
         {
-            if (_db != null)
+            if(_db != null)
             {
+                var query = await _db.LOAI_BANG_LAI.FromSqlRaw($@"SELECT MA_LOAI_BANG_LAI, TEN_LOAI_BANG_LAI, MO_TA FROM LOAI_BANG_LAI").ToListAsync();
+                return query;
+            }
+            return null;
+        }
+
+    public async Task<bool> Update(BangLaiModel bl)
+        {
                 bl.NGAY_CAP_NHAT = DateTime.Now;
                 bl.NGAY_TAO = (DateTime)bl.NGAY_TAO;
                 _db.BANG_LAI.Update(bl);
-                await _db.SaveChangesAsync();
-                return 1;
-            }
-            return 0;
+                var del = await _db.SaveChangesAsync();
+                return del > 0;
         }
 
         public async Task<int> Delete(int id)

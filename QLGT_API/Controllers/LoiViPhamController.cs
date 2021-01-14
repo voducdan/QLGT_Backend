@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace QLGT_API.Controllers
 {
-    [Route("api/law")]
+    [Route("api/laws")]
     [ApiController]
     public class LoiViPhamController : ControllerBase
     {
@@ -25,7 +25,7 @@ namespace QLGT_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromBody] PageCommand pageCommand)
+        public IActionResult GetAll([FromQuery] PageCommand pageCommand)
         {
             try
             {
@@ -73,6 +73,36 @@ namespace QLGT_API.Controllers
                     return BadRequest(ModelState);
                 }
                 var loivipham = this.loiViPhamRepository.Get(w => w.MA_LOI_VI_PHAM == id);
+                if (loivipham == null)
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = "Law not found"
+                    });
+                }
+                return Ok(new
+                {
+                    success = true,
+                    data = loivipham
+                });
+            }
+            catch (IOException e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        //[HttpGet("Name")]
+        [Route("test")]
+        public IActionResult Get([FromBody] TestCommand test) { 
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var loivipham = this.loiViPhamRepository.GetAll(w => w.TEN_LOI_VI_PHAM.Contains(test.NAME) == true);
                 if (loivipham == null)
                 {
                     return NotFound(new
@@ -191,5 +221,7 @@ namespace QLGT_API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+
     }
 }
