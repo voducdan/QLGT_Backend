@@ -9,7 +9,7 @@ namespace QLGT_API.Models
     public class LoaiPhuongTienModel
     {
         [Key]
-        public string MA_LOAI_PHUONG_TIEN { get; set; }
+        public int MA_LOAI_PHUONG_TIEN { get; set; }
         [Required]
         public string TEN_LOAI_PHUONG_TIEN { get; set; }
 

@@ -16,7 +16,8 @@ namespace QLGT_API.Data
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<DanhSachLoiViPhamModel>().HasKey(table => new {
+            builder.Entity<DanhSachLoiViPhamModel>().HasKey(table => new
+            {
                 table.MA_BIEN_BANG,
                 table.MA_LOI_VI_PHAM
             });
