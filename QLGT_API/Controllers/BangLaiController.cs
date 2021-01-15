@@ -160,7 +160,7 @@ namespace QLGT_API.Controllers
                         data = bl
                     });
                 }
-                return NotFound(new
+                return Ok(new
                 {
                     success = false,
                     error = "Lisence not found"
@@ -168,7 +168,7 @@ namespace QLGT_API.Controllers
             }
             catch
             {
-                return NotFound(new
+                return Ok(new
                 {
                     success = false,
                     error = "Could not find any lisence"
@@ -214,7 +214,7 @@ namespace QLGT_API.Controllers
                     }
               
                 }
-                return BadRequest(new
+                return Ok(new
                 {
                     success = false,
                     error = "Lesence id not found"
@@ -223,7 +223,7 @@ namespace QLGT_API.Controllers
             }
             catch
             {
-                return BadRequest(new
+                return Ok(new
                 {
                     success = false,
                     error = "Lesence id not found"
@@ -248,7 +248,7 @@ namespace QLGT_API.Controllers
                 var banglai = await _banglaiData.Delete(id);
                 if (banglai == null)
                 {
-                    return NotFound(new
+                    return Ok(new
                     {
                         success = false,
                         error = "Lisence not found"
@@ -262,7 +262,7 @@ namespace QLGT_API.Controllers
             }
             catch
             {
-                return BadRequest(new
+                return Ok(new
                 {
                     success = false,
                     error = "Lesence id not found"

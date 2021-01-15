@@ -124,7 +124,7 @@ namespace QLGT_API.Controllers
                             data = phuongtien
                         });
                     }
-                    return NotFound(new
+                    return Ok(new
                     {
                         success = false,
                         error = " not found"
@@ -133,7 +133,7 @@ namespace QLGT_API.Controllers
             }
             catch 
             {
-                return NotFound(new
+                return Ok(new
                 {
                     success = false,
                     error = " not found"
@@ -145,13 +145,14 @@ namespace QLGT_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]  CreatePhuongTienCommand command)
         {
-            PhuongTienModel phuongTien = new PhuongTienModel();
+           
             try
             {
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
+                PhuongTienModel phuongTien = new PhuongTienModel();
                 var khachhang = this._khachHangService.GetKhachHang(command.CMND);
                 if (khachhang != null)
                 {
@@ -179,7 +180,7 @@ namespace QLGT_API.Controllers
                         });
                     }
                 }
-                return NotFound(new
+                return Ok(new
                 {
                     success = false,
                     error = " not found"
@@ -188,7 +189,7 @@ namespace QLGT_API.Controllers
             }
             catch 
             {
-                return NotFound(new
+                return Ok(new
                 {
                     success = false,
                     error = " not found"
@@ -257,7 +258,7 @@ namespace QLGT_API.Controllers
                     data = phuongtien
                 });
             }
-            catch (IOException e)
+            catch 
             {
                 return NotFound(new
                 {
