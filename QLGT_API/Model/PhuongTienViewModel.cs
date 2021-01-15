@@ -12,37 +12,37 @@ namespace QLGT_API.Model
     {
         [Key]
         public int MA_PHUONG_TIEN { get; set; }
-        [Required]
+
         public string? TEN_KHACH_HANG { get; set; }
-        [Required]
+
         public string? CMND { get; set; }
-        [Required]
+
         public string? TEN_LOAI_PHUONG_TIEN { get; set; }
-        [Required]
+
         public int MA_LOAI_PHUONG_TIEN { get; set; }
-        [Required]
+
         public string? SO_PHUONG_TIEN { get; set; }
-        [Required]
+
         public string? SO_MAY { get; set; }
-        [Required]
+
         public DateTime NGAY_DANG_KY { get; set; }
-        [Required]
+
         public string? MAU_SON { get; set; }
-        [Required]
+
         public string? NHAN_HIEU { get; set; }
-        [Required]
+
         public int? DUNG_TICH { get; set; }
-        [Required]
+
         public string? BIEN_SO_XE { get; set; }
       
         public DateTime NGAY_DAU_DANG_KY { get; set; }
 
         public string? GHI_CHU { get; set; }
-        [Required]
+
         public DateTime NGAY_TAO { get; set; }
-        [Required]
+
         public DateTime NGAY_CAP_NHAT { get; set; }
-        [Required]
+
         public int? HOAT_DONG { get; set; }
     }
 }

@@ -36,6 +36,8 @@ namespace QLGT_API.Data
                    
 
 
+                    var temp = await _db.PHUONG_TIEN.FromSqlRaw($@"SELECT MA_PHUONG_TIEN,MA_KHACH_HANG,MA_LOAI_PHUONG_TIEN,SO_PHUONG_TIEN,SO_MAY,NGAY_DANG_KY,MAU_SON,NHAN_HIEU,DUNG_TICH,BIEN_SO_XE,NGAY_DAU_DANG_KY,GHI_CHU,NGAY_TAO,NGAY_CAP_NHAT,HOAT_DONG FROM PHUONG_TIEN").ToListAsync();
+                    int maxSize = temp.Count();
                     var query = await _db.PHUONG_TIEN_VIEW.FromSqlRaw($@"WITH DerTable AS(
 					SELECT MA_PHUONG_TIEN,MA_KHACH_HANG,MA_LOAI_PHUONG_TIEN,SO_PHUONG_TIEN,SO_MAY,NGAY_DANG_KY ,MAU_SON,NHAN_HIEU,DUNG_TICH,BIEN_SO_XE,NGAY_DAU_DANG_KY,GHI_CHU,NGAY_TAO,NGAY_CAP_NHAT,HOAT_DONG,
 
@@ -48,7 +50,7 @@ namespace QLGT_API.Data
                     join KHACH_HANG kh on KH.MA_KHACH_HANG = PT.MA_KHACH_HANG 
                     join LOAI_PHUONG_TIEN lpt on lpt.MA_LOAI_PHUONG_TIEN = pt.MA_LOAI_PHUONG_TIEN
                     WHERE RowNumber BETWEEN {from} AND {to}").ToListAsync();
-                    int maxSize = query.Count();
+                   
                     int PageLast =(int)(maxSize / PageSize) + 1; ;
                     if (PageNext > PageLast) 
                     { 
