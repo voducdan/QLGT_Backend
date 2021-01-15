@@ -73,6 +73,8 @@ namespace QLGT_API
             services.AddScoped<CongAnRepository, CongAnRepository>();
             services.AddScoped<CongAnService, CongAnService>();
 
+            services.AddScoped<ReportService, ReportService>();
+
             ////configure strongly typed settings object
             var authSettingsSection = Configuration.GetSection("AuthSettings");
             services.Configure<AuthSettings>(authSettingsSection);

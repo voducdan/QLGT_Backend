@@ -29,7 +29,7 @@ namespace QLGT_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromBody] PageCommand pageCommand)
+        public IActionResult GetAll([FromQuery] PageCommand pageCommand)
         {
             try
             {
