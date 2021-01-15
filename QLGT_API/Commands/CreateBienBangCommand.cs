@@ -8,7 +8,7 @@ namespace QLGT_API.Commands
 {
     public class CreateBienBangCommand
     {
-        public int MA_KHACH_HANG { get; set; }
+        public string CMND { get; set; }
         public int MA_SO_CONG_AN { get; set; }
         public string? NOI_LAP { get; set; }
         public string? DON_VI_LAP_BIEN_BANG { get; set; }
