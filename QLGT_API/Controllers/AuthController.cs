@@ -73,10 +73,10 @@ namespace QLGT_API.Controllers
 
         [Route("loginToken")]
         [HttpPost]
-        public LoginView LoginToken([FromQuery] string token)
+        public LoginView LoginToken([FromHeader] string authorization)
         {
             LoginView loginView = new LoginView();
-            var user = jWTService.GetUser(token);
+            var user = jWTService.GetUser(authorization);
             if (user == null)
             {
                 loginView.code = 400;
@@ -87,7 +87,7 @@ namespace QLGT_API.Controllers
             if (user != null)
             {   
                 loginView.code = 200;
-                loginView.AccessToken = token;
+                loginView.AccessToken = authorization;
                 loginView.message = "Login Sucessful";
                 loginView.MaKH = user.MA_KHACH_HANG;
             }
@@ -97,10 +97,10 @@ namespace QLGT_API.Controllers
 
         [Route("generator")]
         [HttpGet]
-        public AccountView Generator([FromQuery] string token)
+        public AccountView Generator([FromHeader] string authorization)
         {
             AccountView accountView = new AccountView();
-            var user = jWTService.GetUser(token);
+            var user = jWTService.GetUser(authorization);
             if (user != null)
             {
                 accountView.UserName = user.CMND;

@@ -107,6 +107,49 @@ namespace QLGT_API.Controllers
             }
         }
 
+        [HttpGet("{cmnd}")]
+        public IActionResult Get_cmnd(string cmnd)
+        {
+            if (cmnd.ToString() == null)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    error = "Customer id not found"
+                });
+            }
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var khachhang = this.khachHangRepository.Get(w => w.CMND == cmnd);
+                if (khachhang == null)
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = "Customer not found"
+                    });
+                }
+                return Ok(new
+                {
+                    success = true,
+                    khachhang
+                });
+            }
+            catch
+            {
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Fail"
+                });
+            }
+        }
+
+
         [HttpPost]
         public IActionResult Create([FromBody] CreateKhachHangCommand command)
         {
