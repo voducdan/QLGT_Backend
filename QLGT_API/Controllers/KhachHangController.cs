@@ -124,7 +124,9 @@ namespace QLGT_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
+                KhachHangModel data = new KhachHangModel();
                 var khachhang = this.khachHangRepository.Get(w => w.CMND == cmnd);
+                
                 if (khachhang == null)
                 {
                     return NotFound(new
@@ -135,8 +137,9 @@ namespace QLGT_API.Controllers
                 }
                 return Ok(new
                 {
-                    success = true,
-                    data = khachhang
+                    data = new { data = khachhang},
+                    success = true
+                    
                 });
             }
             catch
