@@ -145,13 +145,14 @@ namespace QLGT_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]  CreatePhuongTienCommand command)
         {
-            PhuongTienModel phuongTien = new PhuongTienModel();
+           
             try
             {
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
+                PhuongTienModel phuongTien = new PhuongTienModel();
                 var khachhang = this._khachHangService.GetKhachHang(command.CMND);
                 if (khachhang != null)
                 {

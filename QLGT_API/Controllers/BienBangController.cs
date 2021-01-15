@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using QLGT_API.Commands;
 using QLGT_API.Model;
+using QLGT_API.Models;
 using QLGT_API.Repository;
 using QLGT_API.Views;
 using System;
@@ -18,10 +19,13 @@ namespace QLGT_API.Controllers
     {
         private readonly BienBangRepository bienBangRepository;
         private readonly BienBangService bienBangService;
-        public BienBangController(BienBangRepository bienBangRepository, BienBangService bienBangService)
+        private readonly KhachHangService khachHangService;
+
+        public BienBangController(BienBangRepository bienBangRepository, BienBangService bienBangService, KhachHangService khachHangService)
         {
             this.bienBangRepository = bienBangRepository;
             this.bienBangService = bienBangService;
+            this.khachHangService = khachHangService;
         }
 
         [HttpGet]
@@ -98,28 +102,28 @@ namespace QLGT_API.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] CreateBienBangCommand command)
         {
-            BienBangModel bb = new BienBangModel();
-            bb.MA_KHACH_HANG = command.MA_KHACH_HANG;
-            bb.MA_SO_CONG_AN = command.MA_SO_CONG_AN;
-            bb.NOI_LAP = command.NOI_LAP;
-            bb.DON_VI_LAP_BIEN_BANG = command.DON_VI_LAP_BIEN_BANG;
-            bb.DON_VI_YC_NOP_PHAT = command.DON_VI_YC_NOP_PHAT;
-            bb.TONG_TIEN = command.TONG_TIEN;
-            bb.TRANG_THAI = command.TRANG_THAI;
-            bb.GHI_CHU = command.GHI_CHU;
-            bb.NGAY_CAP_NHAT = command.NGAY_CAP_NHAT;
-            bb.HOAT_DONG = command.HOAT_DONG;
-            bb.Y_KIEN_BO_XUNG = command.Y_KIEN_BO_XUNG;
-            bb.NGAY_TAO = DateTime.Now;
-            bb.NGAY_LAP = DateTime.Now;
-            bb.NGAY_CAP_NHAT = DateTime.Now;
+            KhachHangModel khachHangModel = new KhachHangModel();
+            khachHangModel = khachHangService.GetKhachHang(command.CMND);
 
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
+            BienBangModel bb = new BienBangModel();
+            if (khachHangModel!= null)
+            {               
+                bb.MA_KHACH_HANG = khachHangModel.MA_KHACH_HANG;
+                bb.MA_SO_CONG_AN = command.MA_SO_CONG_AN;
+                bb.NOI_LAP = command.NOI_LAP;
+                bb.DON_VI_LAP_BIEN_BANG = command.DON_VI_LAP_BIEN_BANG;
+                bb.DON_VI_YC_NOP_PHAT = command.DON_VI_YC_NOP_PHAT;
+                bb.TONG_TIEN = command.TONG_TIEN;
+                bb.NGAY_YC_NOP_PHAT = command.NGAY_YC_NOP_PHAT;
+                bb.TRANG_THAI = command.TRANG_THAI;
+                bb.GHI_CHU = command.GHI_CHU;
+                bb.HOAT_DONG = command.HOAT_DONG;
+                bb.Y_KIEN_BO_XUNG = command.Y_KIEN_BO_XUNG;
+                bb.NGAY_TAO = DateTime.Now;
+                bb.NGAY_LAP = DateTime.Now;
+                bb.NGAY_CAP_NHAT = DateTime.Now;
+                
+
                 this.bienBangRepository.Create(bb);
                 return Ok(new
                 {
@@ -127,11 +131,14 @@ namespace QLGT_API.Controllers
                     data = bb
                 });
             }
-            catch (IOException e)
+            else
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+                return Ok(new
+                {
+                    success = false,
+                    error = "CMND is not exists and Fail"
+                });
+            }     
         }
 
         [HttpPut]
