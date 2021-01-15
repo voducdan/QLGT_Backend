@@ -95,10 +95,25 @@ namespace QLGT_API.Controllers
             return loginView;
         }
 
+        [Route("generator")]
+        [HttpGet]
+        public AccountView Generator([FromQuery] string token)
+        {
+            AccountView accountView = new AccountView();
+            var user = jWTService.GetUser(token);
+            if (user != null)
+            {
+                accountView.UserName = user.CMND;
+                accountView.MaKH = user.MA_KHACH_HANG;
+            }
 
 
+            return accountView;
+           
+        }
 
-         // create new user
+
+        // create new user
         [Route("register")]
         [HttpPost]
         public RegisterView register([FromBody] CreateUserCommand command)
