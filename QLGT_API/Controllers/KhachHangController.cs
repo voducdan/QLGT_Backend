@@ -55,10 +55,13 @@ namespace QLGT_API.Controllers
                     data = khachhang
                 });
             }
-            catch (IOException e)
+            catch 
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Fail"
+                });
             }
         }
 
@@ -96,7 +99,11 @@ namespace QLGT_API.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Fail"
+                });
             }
         }
 
@@ -143,24 +150,31 @@ namespace QLGT_API.Controllers
                 });
 
             }
-            catch (IOException e)
+            catch 
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Fail"
+                });
             }
         }
 
         [HttpPut]
-        public IActionResult Update([FromBody] KhachHangModel khachhang)
+        public Repon Update([FromBody] KhachHangModel khachhang)
         {
+            Repon repo = new Repon();
             try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
+            {              
 
-                var kh = this.khachHangService.GetKhachHang_id(khachhang.MA_KHACH_HANG);
+                var kh = this.khachHangService.GetKhachHang_id(khachhang.MA_KHACH_HANG);                
+
+                if (kh == null)
+                {
+                    repo.code = 400;
+                    repo.err = "Ma KH is not exists";
+                    
+                }                    
                 if(kh != null)
                 {
                     //kh = khachhang;
@@ -169,18 +183,19 @@ namespace QLGT_API.Controllers
                     kh.SDT = khachhang.SDT;
                     kh.TEN_KHACH_HANG = khachhang.TEN_KHACH_HANG;
                     kh.HOAT_DONG = khachhang.HOAT_DONG;
+                    kh.CMND = khachhang.CMND;
                     khachHangRepository.Update(kh);
-                }
-                return Ok(new
-                {
-                    success = true
 
-                });
+                    repo.code = 200;
+                    repo.err = "Success";
+                }               
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                repo.code = 400;
+                repo.err = "Fail";
             }
+            return repo;
         }
     }
 }

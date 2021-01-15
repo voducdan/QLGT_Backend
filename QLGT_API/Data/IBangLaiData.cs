@@ -12,8 +12,9 @@ namespace QLGT_API.Data
     {
         Task<ListView<KhachHang_BangLaiModel>> GetAll(int? pageSize, int? pageIndex);
         Task<KhachHang_BangLaiModel> Get(int id);
-        Task<int> Update(BangLaiModel kh_bl);
+        Task<bool> Update(BangLaiModel kh_bl);
         Task<int> Delete(int id);
         Task<int> Create(BangLaiModel bl);
+        Task<List<LoaiBangLaiModel>> GetLisenceType();
     }
 }

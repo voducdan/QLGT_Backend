@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace QLGT_API.Controllers
 {
-    [Route("api/law")]
+    [Route("api/laws")]
     [ApiController]
     public class LoiViPhamController : ControllerBase
     {
@@ -25,7 +25,7 @@ namespace QLGT_API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromBody] PageCommand pageCommand)
+        public IActionResult GetAll([FromQuery] PageCommand pageCommand)
         {
             try
             {
@@ -48,10 +48,13 @@ namespace QLGT_API.Controllers
                     data = loivipham
                 });
             }
-            catch (IOException e)
+            catch 
             {
-                Console.WriteLine(e.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Could not find any law"
+                });
             }
         }
 
@@ -87,9 +90,47 @@ namespace QLGT_API.Controllers
                     data = loivipham
                 });
             }
-            catch (IOException e)
+            catch 
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Law not found"
+                });
+            }
+        }
+
+        //[HttpGet("Name")]
+        [Route("search")]
+        public IActionResult Get([FromQuery] TestCommand search) { 
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var loivipham = this.loiViPhamRepository.GetAll(w => w.TEN_LOI_VI_PHAM.Contains(search.NAME) == true);
+                if (loivipham.Count() == 0)
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        error = "Law not found"
+                    });
+                }
+                    return Ok(new
+                    {
+                        success = true,
+                        data = loivipham
+                    });
+            }
+            catch
+            {
+                return NotFound(new
+                {
+                    success = false,
+                    error = "Law not found"
+                });
             }
         }
 
@@ -191,5 +232,7 @@ namespace QLGT_API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
+
+
     }
 }

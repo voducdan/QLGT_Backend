@@ -55,6 +55,7 @@ namespace QLGT_API.Controllers
             }
         }
 
+        
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
