@@ -105,14 +105,15 @@ namespace QLGT_API.Controllers
             bb.DON_VI_LAP_BIEN_BANG = command.DON_VI_LAP_BIEN_BANG;
             bb.DON_VI_YC_NOP_PHAT = command.DON_VI_YC_NOP_PHAT;
             bb.TONG_TIEN = command.TONG_TIEN;
+            bb.NGAY_YC_NOP_PHAT = command.NGAY_YC_NOP_PHAT;
             bb.TRANG_THAI = command.TRANG_THAI;
             bb.GHI_CHU = command.GHI_CHU;
-            bb.NGAY_CAP_NHAT = command.NGAY_CAP_NHAT;
             bb.HOAT_DONG = command.HOAT_DONG;
             bb.Y_KIEN_BO_XUNG = command.Y_KIEN_BO_XUNG;
             bb.NGAY_TAO = DateTime.Now;
             bb.NGAY_LAP = DateTime.Now;
-            bb.NGAY_CAP_NHAT = DateTime.Now;
+            bb.NGAY_CAP_NHAT = command.NGAY_CAP_NHAT;
+            
 
             try
             {
