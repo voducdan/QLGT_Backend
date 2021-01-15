@@ -15,6 +15,8 @@ namespace QLGT_API.Model
 
         public string? TEN_KHACH_HANG { get; set; }
 
+        public int MA_KHACH_HANG { get; set; }
+
         public string? CMND { get; set; }
 
         public string? TEN_LOAI_PHUONG_TIEN { get; set; }
