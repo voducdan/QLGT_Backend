@@ -40,7 +40,7 @@ namespace QLGT_API.Controllers
                 var phuongtien = await _phuongtienData.GetAll(pageCommand.PageSize, pageCommand.PageIndex);
                 if (phuongtien == null)
                 {
-                    return NotFound(new
+                    return Ok(new
                     {
                         success = false,
                         error = "Could not find any vehicle"
@@ -81,7 +81,7 @@ namespace QLGT_API.Controllers
                 var phuongtien = await _phuongtienData.Get(id);
                 if (phuongtien == null)
                 {
-                    return NotFound(new
+                    return Ok(new
                     {
                         success = false,
                         error = "Vehicles not found"
@@ -95,7 +95,7 @@ namespace QLGT_API.Controllers
             }
             catch 
             {
-                return NotFound(new
+                return Ok(new
                 {
                     success = false,
                     error = " not found"
