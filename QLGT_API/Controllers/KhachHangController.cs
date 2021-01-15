@@ -31,7 +31,6 @@ namespace QLGT_API.Controllers
         }
 
         [HttpGet]
-
         public IActionResult GetAll([FromQuery] PageCommand pageCommand)
         {
             try
@@ -65,51 +64,52 @@ namespace QLGT_API.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            if (id.ToString() == null)
-            {
-                return BadRequest(new
-                {
-                    success = false,
-                    error = "Customer id not found"
-                });
-            }
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-                var khachhang =  this.khachHangRepository.Get(w=>w.MA_KHACH_HANG == id);
-                if (khachhang == null)
-                {
-                    return NotFound(new
-                    {
-                        success = false,
-                        error = "Customer not found"
-                    });
-                }
-                return Ok(new
-                {
-                    success = true,
-                    data = khachhang
-                });
-            }
-            catch
-            {
-                return NotFound(new
-                {
-                    success = false,
-                    error = "Fail"
-                });
-            }
-        }
+        //[HttpGet("{id}")]
+        //public IActionResult Get(int id)
+        //{
+        //    if (id.ToString() == null)
+        //    {
+        //        return BadRequest(new
+        //        {
+        //            success = false,
+        //            error = "Customer id not found"
+        //        });
+        //    }
+        //    try
+        //    {
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return BadRequest(ModelState);
+        //        }
+        //        var khachhang =  this.khachHangRepository.Get(w=>w.MA_KHACH_HANG == id);
+        //        if (khachhang == null)
+        //        {
+        //            return NotFound(new
+        //            {
+        //                success = false,
+        //                error = "Customer not found"
+        //            });
+        //        }
+        //        return Ok(new
+        //        {
+        //            success = true,
+        //            data = khachhang
+        //        });
+        //    }
+        //    catch
+        //    {
+        //        return NotFound(new
+        //        {
+        //            success = false,
+        //            error = "Fail"
+        //        });
+        //    }
+        //}
 
         [HttpGet("{cmnd}")]
         public IActionResult Get_cmnd(string cmnd)
         {
+            Console.WriteLine(cmnd);
             if (cmnd.ToString() == null)
             {
                 return BadRequest(new
