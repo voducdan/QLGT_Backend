@@ -28,9 +28,7 @@ namespace QLGT_API.Data
 
         public DbSet<LoaiPhuongTienModel> LOAI_PHUONG_TIEN { get; set; }
         public DbSet<PhuongTienModel> PHUONG_TIEN { get; set; }
-        public DbSet<PhuongTienViewModel> PHUONG_TIEN_VIEW { get; set; }
-
-        public DbSet<UserModel> USER { get; set; }
+        public DbSet<PhuongTienViewModel> PHUONG_TIEN_VIEW { get; set; }          
 
         public DbSet<KhachHang_BangLaiModel> BANGLAI_KHACHHANG { get; set; }
    
@@ -39,6 +37,8 @@ namespace QLGT_API.Data
         public DbSet<DanhSachLoiViPhamModel> DANH_SACH_LOI_VI_PHAM { get; set; }
         public DbSet<LoiViPhamModel> LOI_VI_PHAM { get; set; }
 
-        
+        public DbSet<CongAnModel> CONG_AN { get; set; }
+
+
     }
 }
