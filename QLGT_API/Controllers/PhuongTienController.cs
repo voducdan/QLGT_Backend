@@ -54,11 +54,11 @@ namespace QLGT_API.Controllers
             }
             catch 
             {
-                return NotFound(new
+                return Ok(new
                 {
                     success = false,
-                    error = " not found"
-                });
+                    error="not found"
+                });;
             }
         }
         [HttpGet("{id}")]
@@ -180,16 +180,16 @@ namespace QLGT_API.Controllers
                         });
                     }
                 }
-                return Ok(new
+                return BadRequest(new
                 {
                     success = false,
                     error = " not found"
                 });
 
             }
-            catch 
+            catch (IOException e)
             {
-                return Ok(new
+                return BadRequest(new
                 {
                     success = false,
                     error = " not found"
