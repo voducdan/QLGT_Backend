@@ -66,7 +66,7 @@ namespace QLGT_API.Data
         {
             if (_db != null)
             {
-                var temp = $@"select pt.MA_PHUONG_TIEN,kh.TEN_KHACH_HANG,kh.CMND,lpt.TEN_LOAI_PHUONG_TIEN,pt.MA_LOAI_PHUONG_TIEN,pt.SO_PHUONG_TIEN,pt. SO_MAY,NGAY_DANG_KY ,pt. MAU_SON,NHAN_HIEU,pt.DUNG_TICH,BIEN_SO_XE,pt.NGAY_DAU_DANG_KY,GHI_CHU,pt.NGAY_TAO,pt.NGAY_CAP_NHAT,pt.HOAT_DONG
+                var temp = $@"select pt.MA_PHUONG_TIEN,kh.TEN_KHACH_HANG,kh.MA_KHACH_HANG,kh.CMND,lpt.TEN_LOAI_PHUONG_TIEN,pt.MA_LOAI_PHUONG_TIEN,pt.SO_PHUONG_TIEN,pt. SO_MAY,NGAY_DANG_KY ,pt. MAU_SON,NHAN_HIEU,pt.DUNG_TICH,BIEN_SO_XE,pt.NGAY_DAU_DANG_KY,GHI_CHU,pt.NGAY_TAO,pt.NGAY_CAP_NHAT,pt.HOAT_DONG
 					 from PHUONG_TIEN pt
                     join KHACH_HANG kh on KH.MA_KHACH_HANG = PT.MA_KHACH_HANG 
                     join LOAI_PHUONG_TIEN lpt on lpt.MA_LOAI_PHUONG_TIEN = PT.MA_LOAI_PHUONG_TIEN
