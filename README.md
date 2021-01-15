@@ -21,8 +21,13 @@
 	 - Bình: Binh
 	 - Tuấn: Tuan
 **Sql script**: [Xem trên google drive](https://drive.google.com/drive/folders/1nKrITDJejdb5vDlS86FA0C04RH45Vdtd?usp=sharing)
+
 **ServerDatabase**: [Xem Database Server](https://mssql.site4now.net/default.asp) 
-	**Connection**: Server=SQL5101.site4now.net;Database=DB_A6D005_QLGT;User Id=DB_A6D005_QLGT_admin;Password=binhBonglo1
-**Tài liệu API**: [Xem API](https://www.getpostman.com/collections/55783cc9247eb1380fa3)
-**Task List** [Xem trên Bảng tính](https://docs.google.com/spreadsheets/d/1FM6o355wSUGAVY_0nXb4ZhaX4dk3LWvg2xBS7ewDeRU/edit#gid=0)
-**Note**: *Tạo tạo user binhbonglo, password binhbonglo trong database*
+
+**Connection**: Server=SQL5101.site4now.net;Database=DB_A6D005_QLGT;User Id=DB_A6D005_QLGT_admin;Password=binhBonglo1
+
+**Tài liệu API bằng PostMan**: [Xem API](https://documenter.getpostman.com/view/12951610/TVzVgvUo)
+
+**Task List test** [Xem trên Bảng tính](https://docs.google.com/spreadsheets/d/1FM6o355wSUGAVY_0nXb4ZhaX4dk3LWvg2xBS7ewDeRU/edit#gid=0)
+
+

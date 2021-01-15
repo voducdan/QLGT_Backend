@@ -31,7 +31,6 @@ namespace QLGT_API.Controllers
         }
 
         [HttpGet]
-
         public IActionResult GetAll([FromQuery] PageCommand pageCommand)
         {
             try
@@ -65,10 +64,53 @@ namespace QLGT_API.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        //[HttpGet("{id}")]
+        //public IActionResult Get(int id)
+        //{
+        //    if (id.ToString() == null)
+        //    {
+        //        return BadRequest(new
+        //        {
+        //            success = false,
+        //            error = "Customer id not found"
+        //        });
+        //    }
+        //    try
+        //    {
+        //        if (!ModelState.IsValid)
+        //        {
+        //            return BadRequest(ModelState);
+        //        }
+        //        var khachhang =  this.khachHangRepository.Get(w=>w.MA_KHACH_HANG == id);
+        //        if (khachhang == null)
+        //        {
+        //            return NotFound(new
+        //            {
+        //                success = false,
+        //                error = "Customer not found"
+        //            });
+        //        }
+        //        return Ok(new
+        //        {
+        //            success = true,
+        //            data = khachhang
+        //        });
+        //    }
+        //    catch
+        //    {
+        //        return NotFound(new
+        //        {
+        //            success = false,
+        //            error = "Fail"
+        //        });
+        //    }
+        //}
+
+        [HttpGet("{cmnd}")]
+        public IActionResult Get_cmnd(string cmnd)
         {
-            if (id.ToString() == null)
+            Console.WriteLine(cmnd);
+            if (cmnd.ToString() == null)
             {
                 return BadRequest(new
                 {
@@ -82,7 +124,7 @@ namespace QLGT_API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var khachhang =  this.khachHangRepository.Get(w=>w.MA_KHACH_HANG == id);
+                var khachhang = this.khachHangRepository.Get(w => w.CMND == cmnd);
                 if (khachhang == null)
                 {
                     return NotFound(new
@@ -94,7 +136,7 @@ namespace QLGT_API.Controllers
                 return Ok(new
                 {
                     success = true,
-                    khachhang
+                    data = khachhang
                 });
             }
             catch
@@ -106,6 +148,7 @@ namespace QLGT_API.Controllers
                 });
             }
         }
+
 
         [HttpPost]
         public IActionResult Create([FromBody] CreateKhachHangCommand command)
