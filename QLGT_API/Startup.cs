@@ -70,6 +70,9 @@ namespace QLGT_API
             services.AddScoped<DanhSachLoiViPhamRepository, DanhSachLoiViPhamRepository>();
             services.AddScoped<DanhSachLoiViPhamService, DanhSachLoiViPhamService>();
 
+            services.AddScoped<CongAnRepository, CongAnRepository>();
+            services.AddScoped<CongAnService, CongAnService>();
+
             ////configure strongly typed settings object
             var authSettingsSection = Configuration.GetSection("AuthSettings");
             services.Configure<AuthSettings>(authSettingsSection);
