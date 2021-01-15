@@ -10,8 +10,7 @@ namespace QLGT_API.Model
     {
         [Key]
         public int MA_SO_CONG_AN { get; set; }
-        public string TEN_CONG_AN { get; set; }
-       
+        public string TEN_CONG_AN { get; set; }       
         public int HOAT_DONG { get; set; }
     }
 }

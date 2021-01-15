@@ -32,7 +32,10 @@ namespace QLGT_API.Data
                     
                     int to = PageSize.Value * PageIndex.Value;
                     int from = PageSize.Value * (PageIndex.Value - 1);
-                 
+
+                   
+
+
                     var query = await _db.PHUONG_TIEN_VIEW.FromSqlRaw($@"WITH DerTable AS(
 					SELECT MA_PHUONG_TIEN,MA_KHACH_HANG,MA_LOAI_PHUONG_TIEN,SO_PHUONG_TIEN,SO_MAY,NGAY_DANG_KY ,MAU_SON,NHAN_HIEU,DUNG_TICH,BIEN_SO_XE,NGAY_DAU_DANG_KY,GHI_CHU,NGAY_TAO,NGAY_CAP_NHAT,HOAT_DONG,
 
@@ -40,7 +43,7 @@ namespace QLGT_API.Data
 						FROM 
 							PHUONG_TIEN 
 				)
-                   select pt.MA_PHUONG_TIEN,kh.TEN_KHACH_HANG,kh.CMND,lpt.TEN_LOAI_PHUONG_TIEN,pt.MA_LOAI_PHUONG_TIEN,pt.SO_PHUONG_TIEN,pt. SO_MAY,NGAY_DANG_KY ,pt. MAU_SON,NHAN_HIEU,pt.DUNG_TICH,BIEN_SO_XE,pt.NGAY_DAU_DANG_KY,GHI_CHU,pt.NGAY_TAO,pt.NGAY_CAP_NHAT,pt.HOAT_DONG
+                    select pt.MA_PHUONG_TIEN,kh.TEN_KHACH_HANG,kh.CMND,lpt.TEN_LOAI_PHUONG_TIEN,pt.MA_LOAI_PHUONG_TIEN,pt.SO_PHUONG_TIEN,pt. SO_MAY,NGAY_DANG_KY ,pt. MAU_SON,NHAN_HIEU,pt.DUNG_TICH,BIEN_SO_XE,pt.NGAY_DAU_DANG_KY,GHI_CHU,pt.NGAY_TAO,pt.NGAY_CAP_NHAT,pt.HOAT_DONG
 					 from DerTable pt
                     join KHACH_HANG kh on KH.MA_KHACH_HANG = PT.MA_KHACH_HANG 
                     join LOAI_PHUONG_TIEN lpt on lpt.MA_LOAI_PHUONG_TIEN = pt.MA_LOAI_PHUONG_TIEN
