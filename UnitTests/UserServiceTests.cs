@@ -70,7 +70,7 @@ namespace UnitTests
         [Test]
         [TestCase("AC")]
         [TestCase("AA")]
-        public void GetUserTest_WithInvalidCMND_ReturnInvalid(string CMND)
+        public void GetUserTest_WithInvalidCMND_ReturnNull(string CMND)
         {
             var options = new DbContextOptionsBuilder<QLGTDBContext>()
             .UseInMemoryDatabase("UserList")
@@ -82,7 +82,7 @@ namespace UnitTests
                     UserRepository user_repo = new UserRepository(context);
                     user_service = new UserService(context);
                     var result = user_service.GetUser(CMND);
-                    Assert.AreEqual(CMND, result.CMND);
+                    Assert.IsTrue(result == null);
                 }
                 catch (AssertionException e)
                 {
@@ -109,7 +109,7 @@ namespace UnitTests
         [Test]
         [TestCase(44)]
         [TestCase(55)]
-        public void GetUserTest_WithInvalidID_ReturnInvalid(int ID)
+        public void GetUserTest_WithInvalidID_ReturnNull(int ID)
         {
             var options = new DbContextOptionsBuilder<QLGTDBContext>()
             .UseInMemoryDatabase("UserList")
@@ -119,7 +119,7 @@ namespace UnitTests
                 UserRepository user_repo = new UserRepository(context);
                 user_service = new UserService(context);
                 var result = user_service.GetUser_id(ID);
-                Assert.AreEqual(ID, result.MA_KHACH_HANG);
+                Assert.IsTrue(result == null);
             }
         }
         [Test]

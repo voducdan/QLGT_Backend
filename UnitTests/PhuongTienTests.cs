@@ -123,7 +123,49 @@ namespace UnitTests
         [TestCase("12345", 3)]
         [TestCase("12346", 4)]
         [TestCase("12346", 5)]
-        public void AddVehicleTest_ReturnOkObject(string CMND, int count)
+        public void AddVehicleTest_WithValidCMND_ReturnOkObject(string CMND, int count)
+        {
+            var options = new DbContextOptionsBuilder<QLGTDBContext>()
+                .UseInMemoryDatabase("PhuongTienList")
+                .Options;
+            using (var context = new QLGTDBContext(options))
+            {
+                PhuongTienRepository vehicle_repo = new PhuongTienRepository(context);
+                var test_lisense = new CreatePhuongTienCommand()
+                {
+                    SO_PHUONG_TIEN = "ABC",
+                    SO_MAY = "ABC",
+                    MAU_SON = "RED",
+                    NHAN_HIEU = "HONDA",
+                    DUNG_TICH = 150,
+                    BIEN_SO_XE = "49AA",
+                    GHI_CHU = "aaa",
+                    CMND = CMND,
+                    MA_LOAI_PHUONG_TIEN = 2
+                };
+                vehicle_service = new PhuongTienService(context);
+                customer_service = new KhachHangService(context);
+                SqlPhuongTienData sqlPhuongTien = new SqlPhuongTienData(context);
+                PhuongTienController vehicle_controller = new PhuongTienController(sqlPhuongTien, customer_service);
+                CreatePhuongTienCommand command = new CreatePhuongTienCommand();
+                command.SO_PHUONG_TIEN = test_lisense.SO_PHUONG_TIEN;
+                command.SO_MAY = test_lisense.SO_MAY;
+                command.MAU_SON = test_lisense.MAU_SON;
+                command.NHAN_HIEU = test_lisense.NHAN_HIEU;
+                command.DUNG_TICH = test_lisense.DUNG_TICH;
+                command.BIEN_SO_XE = test_lisense.BIEN_SO_XE;
+                command.GHI_CHU = test_lisense.GHI_CHU;
+                command.CMND = test_lisense.CMND;
+                command.MA_LOAI_PHUONG_TIEN = test_lisense.MA_LOAI_PHUONG_TIEN;
+                var result = vehicle_controller.Create(command) as IActionResult;
+                Assert.AreEqual(context.PHUONG_TIEN.Count(), count);
+                context.SaveChangesAsync();
+            }
+        }
+        [Test]
+        [TestCase("CMNDD", 1)]
+        [TestCase("DDDMA", 1)]
+        public void AddVehicleTest_WithInvalidCMND_ReturnOkObject(string CMND, int count)
         {
             var options = new DbContextOptionsBuilder<QLGTDBContext>()
                 .UseInMemoryDatabase("PhuongTienList")
@@ -180,7 +222,7 @@ namespace UnitTests
         [Test]
         [TestCase(1)]
         [TestCase(2)]
-        public void GetLisenseTest_ReturnList(int MaPT)
+        public void GetLisenseTest_WithValidMaPT_ReturnValidList(int MaPT)
         {
             var options = new DbContextOptionsBuilder<QLGTDBContext>()
                 .UseInMemoryDatabase("PhuongTienList")
@@ -190,8 +232,24 @@ namespace UnitTests
                 PhuongTienRepository vehicle_repo = new PhuongTienRepository(context);
                 var result = vehicle_repo.Get(m => m.MA_PHUONG_TIEN == MaPT);
                 Assert.AreEqual(MaPT, result.MA_PHUONG_TIEN);
+                
             }
         }
-
+        [Test]
+        [TestCase(7)]
+        [TestCase(8)]
+        public void GetLisenseTest_WithInvalidMaPT_ReturnNullList(int MaPT)
+        {
+            var options = new DbContextOptionsBuilder<QLGTDBContext>()
+                .UseInMemoryDatabase("PhuongTienList")
+                .Options;
+            using (var context = new QLGTDBContext(options))
+            {
+                PhuongTienRepository vehicle_repo = new PhuongTienRepository(context);
+                var result = vehicle_repo.Get(m => m.MA_PHUONG_TIEN == MaPT);
+                
+                Assert.IsTrue(result == null);
+            }
+        }
     }
 }

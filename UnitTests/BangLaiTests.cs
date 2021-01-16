@@ -106,7 +106,7 @@ namespace UnitTests
         [TestCase("12345",3)]
         [TestCase("12346",4)]
         [TestCase("12346",5)]
-        public void AddLisenseTest_ReturnOkObject(string CMND, int count)
+        public void AddLisenseTest_WithValidCMND_ReturnOkObject(string CMND, int count)
         {
             var options = new DbContextOptionsBuilder<QLGTDBContext>()
                 .UseInMemoryDatabase("BangLaiList")
@@ -138,6 +138,40 @@ namespace UnitTests
             }
         }
         [Test]
+        [TestCase("AVC", 2)]
+        [TestCase("AAVC", 2)]
+        public void AddLisenseTest_WithInvalidCMND_ReturnOkObject(string CMND, int count)
+        {
+            var options = new DbContextOptionsBuilder<QLGTDBContext>()
+                .UseInMemoryDatabase("BangLaiList")
+                .Options;
+            using (var context = new QLGTDBContext(options))
+            {
+                BangLaiRepository lisense_repo = new BangLaiRepository(context);
+                var test_lisense = new CreateBangLaiCommand()
+                {
+                    CMND = CMND,
+                    MA_LOAI_BANG_LAI = 2,
+                    NOI_CAP_NCK = "TPHCM",
+                    THOI_HAN_SU_DUNG = 3
+                };
+                lisense_service = new BangLaiService(context);
+                customer_service = new KhachHangService(context);
+                SqlBangLaiData sqlBangLai = new SqlBangLaiData(context);
+                BangLaiController lisense_controller = new BangLaiController(sqlBangLai, customer_service);
+                CreateBangLaiCommand command = new CreateBangLaiCommand();
+                command.CMND = test_lisense.CMND;
+                command.MA_LOAI_BANG_LAI = test_lisense.MA_LOAI_BANG_LAI;
+                command.NOI_CAP_NCK = test_lisense.NOI_CAP_NCK;
+                command.THOI_HAN_SU_DUNG = test_lisense.THOI_HAN_SU_DUNG;
+
+                var result = lisense_controller.Create(command) as IActionResult;
+
+                Assert.AreEqual(context.BANG_LAI.Count(), 1);
+                context.SaveChangesAsync();
+            }
+        }
+        [Test]
         [TestCase(1)]
         [TestCase(2)]
         public void GetListTest_ReturnList(int number)
@@ -154,8 +188,7 @@ namespace UnitTests
         }
         [Test]
         [TestCase(1)]
-        [TestCase(0)]
-        public void GetLisenseTest_ReturnList(int MaHD)
+        public void GetLisenseTest_WithValid_ReturnList(int MaHD)
         {
             var options = new DbContextOptionsBuilder<QLGTDBContext>()
                 .UseInMemoryDatabase("BangLaiList")
@@ -165,6 +198,21 @@ namespace UnitTests
                 BangLaiRepository lisense_repo = new BangLaiRepository(context);
                 var result = lisense_repo.Get(m => m.HOAT_DONG == MaHD);
                 Assert.AreEqual(1, result.MA_BANG_LAI);
+            }
+        }
+        [Test]
+        [TestCase(10)]
+        [TestCase(110)]
+        public void GetLisenseTest_WithInvalid_ReturnNullList(int MaHD)
+        {
+            var options = new DbContextOptionsBuilder<QLGTDBContext>()
+                .UseInMemoryDatabase("BangLaiList")
+                .Options;
+            using (var context = new QLGTDBContext(options))
+            {
+                BangLaiRepository lisense_repo = new BangLaiRepository(context);
+                var result = lisense_repo.Get(m => m.HOAT_DONG == MaHD);
+                Assert.IsTrue(result == null);
             }
         }
 

@@ -72,7 +72,7 @@ namespace UnitTests
         }
         [Test]
         [TestCase(2)]
-        [TestCase(3)]
+        [TestCase(6)]
         public void GetListTest_ReturnList(int number)
         {
             var options = new DbContextOptionsBuilder<QLGTDBContext>()
