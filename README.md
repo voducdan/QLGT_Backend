@@ -12,11 +12,12 @@
 	 - 1712197 - Nguyễn Trương Anh Tuấn 	
 	 - 1712253 - Thạch Minh Trí 
 	 - 1712294 - Nguyễn Quang Bình
-	 -  1712317 - Võ Đức Dân 
+	 - 1712317 - Võ Đức Dân 
 	 
 ### Danh sách routes
 - /api/customers : Lấy danh sách tất cả user 
 ... xem rõ hơn hơn ở tài liệu report Postman
+
 **Tài liệu API bằng PostMan**: [Xem API](https://documenter.getpostman.com/view/12951610/TVzVgvUo)
 ### Branch
 	 - Tuấn: Tuan
@@ -35,9 +36,9 @@
 	- Password=binhBonglo1
 	
 ### Sript Database
-**Sql script**: [Xem trên google drive](https://drive.google.com/drive/folders/1nKrITDJejdb5vDlS86FA0C04RH45Vdtd?usp=sharing)
+**Sql script**: [Xem google drive](https://drive.google.com/drive/folders/1nKrITDJejdb5vDlS86FA0C04RH45Vdtd?usp=sharing)
 
 ### Task List Test
-**Task List test** [Xem trên Bảng tính](https://docs.google.com/spreadsheets/d/1FM6o355wSUGAVY_0nXb4ZhaX4dk3LWvg2xBS7ewDeRU/edit#gid=0)
+**Task List test** [Xem Bảng tính](https://docs.google.com/spreadsheets/d/1FM6o355wSUGAVY_0nXb4ZhaX4dk3LWvg2xBS7ewDeRU/edit#gid=0)
 
 
