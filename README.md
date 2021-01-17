@@ -39,6 +39,6 @@
 **Sql script**: [Xem google drive](https://drive.google.com/drive/folders/1nKrITDJejdb5vDlS86FA0C04RH45Vdtd?usp=sharing)
 
 ### Task List Test
-**Task List test** [Xem Bảng tính](https://docs.google.com/spreadsheets/d/1FM6o355wSUGAVY_0nXb4ZhaX4dk3LWvg2xBS7ewDeRU/edit#gid=0)
+**Task List test** [Xem Bảng tính](https://drive.google.com/file/d/1vM5tM2BAnjuJ-qCxrksqzETGOweDShnf/view?usp=sharing)
 
 
